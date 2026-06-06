@@ -1,0 +1,14 @@
+### Petición 1: Crear un Recurso (POST)
+POST http://127.0.0.1:8000/api/resources/
+Content-Type: application/json
+
+{
+    "titulo": "Mi primer recurso en WSL",
+    "descripcion": "Prueba exitosa con REST Client",
+    "completado": false
+}
+
+###
+
+### Petición 2: Listar los Recursos (GET)
+GET http://127.0.0.1:8000/api/resources/
