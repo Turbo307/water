@@ -1,0 +1,47 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+
+<p>Bienvenido al panel de administración del sistema Water.</p>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total de reportes</h3>
+        <p>{{ total_reportes }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Pendientes</h3>
+        <p>{{ pendientes }}</p>
+    </div>
+
+    <div class="card">
+        <h3>En atención</h3>
+        <p>{{ progreso }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Resueltos</h3>
+        <p>{{ resueltos }}</p>
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <h2>Resumen</h2>
+
+    <p>
+        Desde este panel el administrador podrá consultar los reportes
+        registrados por los usuarios, revisar su estado y dar seguimiento
+        a las incidencias reportadas.
+    </p>
+
+</div>
+
+{% endblock %}

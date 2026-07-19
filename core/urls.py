@@ -13,7 +13,9 @@ router.register(r'reportes-fuga', ReporteFugaViewSet, basename='reportefuga')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path("", include("api.urls"))
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(
