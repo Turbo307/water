@@ -129,3 +129,18 @@ STATICFILES_DIRS = [
 # Archivos multimedia (fotos de los reportes)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+
+#Esto le dice a Django REST Framework:
+#Cuando alguien quiera autenticarse en la API, utiliza JWT.
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+}

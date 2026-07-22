@@ -6,64 +6,232 @@
 
 <h1>Detalle del Reporte</h1>
 
-<div class="detalle-reporte">
+<div id="detalle-reporte">
 
-    <div class="detalle-item">
-        <strong>ID:</strong>
-        <p>{{ reporte.id }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Usuario:</strong>
-        <p>{{ reporte.owner.username }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Tipo de incidente:</strong>
-        <p>{{ reporte.tipo_incidente }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Descripción:</strong>
-        <p>{{ reporte.descripcion }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Dirección:</strong>
-        <p>{{ reporte.direccion_manual }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Latitud:</strong>
-        <p>{{ reporte.latitud }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Longitud:</strong>
-        <p>{{ reporte.longitud }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Estado:</strong>
-        <p>{{ reporte.estatus }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Fecha:</strong>
-        <p>{{ reporte.fecha_creacion }}</p>
-    </div>
-
-    <div class="detalle-item">
-        <strong>Fotografía:</strong>
-
-        {% if reporte.foto %}
-            <img src="{{ reporte.foto.url }}" alt="Reporte">
-        {% else %}
-            <p>No hay fotografía.</p>
-        {% endif %}
-
-    </div>
+    <p>Cargando información del reporte...</p>
 
 </div>
+
+
+<script>
+
+    // Obtenemos el ID desde la URL
+    const partesUrl =
+        window.location.pathname.split("/");
+
+    // La URL es:
+    // /reportes/<uuid>/
+    // Por eso el ID está en la posición 2
+    const reporteId = partesUrl[2];
+
+
+    // Obtenemos el token JWT
+    const token =
+        localStorage.getItem("access_token");
+
+
+    // Contenedor donde mostraremos la información
+    const contenedor =
+        document.getElementById(
+            "detalle-reporte"
+        );
+
+
+    // Consultamos la API
+    fetch(
+        `/api/reportes-fuga/${reporteId}/`,
+        {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization":
+                    `Bearer ${token}`,
+
+                "Content-Type":
+                    "application/json"
+
+            }
+
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No se pudo obtener el reporte"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(reporte => {
+
+        console.log(
+            "Reporte recibido:",
+            reporte
+        );
+
+
+        contenedor.innerHTML = `
+
+            <div class="detalle-item">
+
+                <strong>ID:</strong>
+
+                <p>
+                    ${reporte.id}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Usuario:</strong>
+
+                <p>
+                    ${reporte.owner_username || "Sin usuario"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Tipo de incidente:</strong>
+
+                <p>
+                    ${reporte.tipo_incidente || "Sin tipo"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Descripción:</strong>
+
+                <p>
+                    ${reporte.descripcion || "Sin descripción"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Dirección:</strong>
+
+                <p>
+                    ${reporte.direccion_manual || "Sin dirección"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Latitud:</strong>
+
+                <p>
+                    ${reporte.latitud || "Sin ubicación"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Longitud:</strong>
+
+                <p>
+                    ${reporte.longitud || "Sin ubicación"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Estado:</strong>
+
+                <p>
+                    ${reporte.estatus || "Sin estado"}
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Fecha:</strong>
+
+                <p>
+                    ${
+                        reporte.fecha_creacion
+                            ? new Date(
+                                reporte.fecha_creacion
+                              ).toLocaleString("es-MX")
+                            : "Sin fecha"
+                    }
+                </p>
+
+            </div>
+
+
+            <div class="detalle-item">
+
+                <strong>Fotografía:</strong>
+
+                ${
+                    reporte.foto
+
+                    ? `
+                        <img
+                            src="${reporte.foto}"
+                            alt="Fotografía del reporte"
+                        >
+                      `
+
+                    : `
+                        <p>
+                            No hay fotografía.
+                        </p>
+                      `
+                }
+
+            </div>
+
+        `;
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Error:",
+            error
+        );
+
+
+        contenedor.innerHTML = `
+
+            <p>
+                No se pudo cargar el detalle
+                del reporte.
+            </p>
+
+        `;
+
+    });
+
+</script>
 
 {% endblock %}

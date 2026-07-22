@@ -10,6 +10,77 @@
     Aquí se muestran todos los reportes registrados por los usuarios.
 </p>
 
+<!-- aqui emmpieza nomas para prueba-->
+
+<h2>Crear nuevo reporte</h2>
+
+<form id="reporte-form">
+
+    <div>
+        <label for="tipo_incidente">
+            Tipo de incidente
+        </label>
+
+        <select id="tipo_incidente" required>
+
+            <option value="BANQUETA">
+                Fuga en banqueta / vía pública
+            </option>
+
+            <option value="MEDIDOR">
+                Fuga en el medidor
+            </option>
+
+            <option value="DRENAJE">
+                Brote de aguas negras
+            </option>
+
+            <option value="OTRO">
+                Otro tipo de reporte
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="descripcion">
+            Descripción
+        </label>
+
+        <textarea
+            id="descripcion"
+            placeholder="Describe el problema..."
+        ></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="direccion_manual">
+            Dirección
+        </label>
+
+        <input
+            type="text"
+            id="direccion_manual"
+            placeholder="Escribe la dirección"
+        >
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Crear reporte
+    </button>
+
+</form>
+
+<p id="mensaje-reporte"></p>
+
+<!--- fin -->
+
 <table class="tabla-reportes">
 
     <thead>
@@ -23,42 +94,232 @@
         </tr>
     </thead>
 
-    <tbody>
-
-        {% for reporte in reportes %}
-
-        <tr>
-
-            <td>{{ reporte.tipo_incidente }}</td>
-
-            <td>{{ reporte.owner.username }}</td>
-
-            <td>{{ reporte.direccion_manual|default:"Sin dirección" }}</td>
-
-            <td>{{ reporte.estatus }}</td>
-
-            <td>{{ reporte.fecha_creacion|date:"d/m/Y H:i" }}</td>
-
-            <td>
-                <a href="{% url 'detalle_reporte' reporte.id %}">
-                    Ver detalle
-                </a>
-            </td>
-
-        </tr>
-
-        {% empty %}
+    <tbody id="tabla-reportes-body">
 
         <tr>
             <td colspan="6" style="text-align:center;">
-                No existen reportes registrados.
+                Cargando reportes...
             </td>
         </tr>
-
-        {% endfor %}
 
     </tbody>
 
 </table>
+
+<script>
+
+    const token = localStorage.getItem("access_token");
+
+    fetch("/api/reportes-fuga/", {
+    method: "GET",
+    headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+    }
+ })
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Error al obtener los reportes");
+            }
+
+            return response.json();
+        })
+
+        .then(reportes => {
+
+            const tbody = document.getElementById("tabla-reportes-body");
+
+            tbody.innerHTML = "";
+
+            if (reportes.length === 0) {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center;">
+                            No existen reportes registrados.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            reportes.forEach(reporte => {
+
+                const fila = document.createElement("tr");
+
+                fila.innerHTML = `
+                    <td>${reporte.tipo_incidente || "Sin tipo"}</td>
+
+                    <td>${reporte.owner_username || "Sin usuario"}</td>
+
+                    <td>${reporte.direccion_manual || "Sin dirección"}</td>
+
+                    <td>${reporte.estatus || "Sin estado"}</td>
+
+                    <td>
+                        ${reporte.fecha_creacion
+                            ? new Date(reporte.fecha_creacion).toLocaleString("es-MX")
+                            : "Sin fecha"}
+                    </td>
+
+                    <td>
+                        <a href="/reportes/${reporte.id}/">
+                            Ver detalle
+                        </a>
+                    </td>
+                `;
+
+                tbody.appendChild(fila);
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error("Error:", error);
+
+            const tbody = document.getElementById("tabla-reportes-body");
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;">
+                        Error al cargar los reportes.
+                    </td>
+                </tr>
+            `;
+
+        });
+
+
+
+
+        // para prueba
+
+        const formularioReporte =
+    document.getElementById("reporte-form");
+
+formularioReporte.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const token =
+            localStorage.getItem("access_token");
+
+        const tipoIncidente =
+            document.getElementById(
+                "tipo_incidente"
+            ).value;
+
+        const descripcion =
+            document.getElementById(
+                "descripcion"
+            ).value;
+
+        const direccionManual =
+            document.getElementById(
+                "direccion_manual"
+            ).value;
+
+        const mensaje =
+            document.getElementById(
+                "mensaje-reporte"
+            );
+
+
+        try {
+
+            const respuesta = await fetch(
+                "/api/reportes-fuga/",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            `Bearer ${token}`,
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        tipo_incidente:
+                            tipoIncidente,
+
+                        descripcion:
+                            descripcion,
+
+                        direccion_manual:
+                            direccionManual
+
+                    })
+
+                }
+            );
+
+
+            const datos =
+                await respuesta.json();
+
+
+            if (!respuesta.ok) {
+
+                console.error(
+                    "Error de API:",
+                    datos
+                );
+
+                mensaje.textContent =
+                    "No se pudo crear el reporte.";
+
+                return;
+            }
+
+
+            console.log(
+                "Reporte creado:",
+                datos
+            );
+
+
+            mensaje.textContent =
+                "¡Reporte creado correctamente!";
+
+
+            formularioReporte.reset();
+
+
+            // Recargar la lista de reportes
+            setTimeout(
+                () => {
+                    location.reload();
+                },
+                1000
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error:",
+                error
+            );
+
+            mensaje.textContent =
+                "Error al conectar con la API.";
+
+        }
+
+    }
+);
+</script>
 
 {% endblock %}

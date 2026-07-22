@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesión</title>
+</head>
+
+<body>
+
+    <h1>Iniciar sesión</h1>
+
+    <form id="login-form">
+
+        <div>
+            <label for="username">
+                Usuario
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="password">
+                Contraseña
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                required
+            >
+        </div>
+
+        <br>
+
+        <button type="submit">
+            Iniciar sesión
+        </button>
+
+    </form>
+
+    <p id="mensaje"></p>
+
+
+    <script>
+
+        const formulario = document.getElementById("login-form");
+
+        formulario.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const mensaje =
+                document.getElementById("mensaje");
+
+
+            try {
+
+                const respuesta = await fetch("/api/token/", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+
+                });
+
+
+                const datos = await respuesta.json();
+
+
+                if (!respuesta.ok) {
+
+                    mensaje.textContent =
+                        "Usuario o contraseña incorrectos.";
+
+                    console.error(datos);
+
+                    return;
+                }
+
+
+                // Guardamos los tokens
+                localStorage.setItem(
+                    "access_token",
+                    datos.access
+                );
+
+                localStorage.setItem(
+                    "refresh_token",
+                    datos.refresh
+                );
+
+
+                mensaje.textContent =
+                    "¡Inicio de sesión exitoso!";
+
+                // ir a dashboard
+                window.location.href = "/dashboard/";
+
+
+                console.log(
+                    "Access Token:",
+                    datos.access
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                mensaje.textContent =
+                    "Error al conectar con el servidor.";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -93,3 +93,7 @@ def detalle_reporte(request, id):
             "reporte": reporte
         }
     )
+
+
+def login_page(request):
+    return render(request, "login/login.html")
