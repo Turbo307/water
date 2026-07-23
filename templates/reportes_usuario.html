@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de Fugas de Agua</title>
+    <link rel="stylesheet" href="/static/css/reportes.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Sistema de Reportes de Fugas</h1>
+                <div class="user-info" id="userInfo">
+                    <span id="usernameTxt">Cargando...</span>
+                    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAV TABS -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="crear-reporte">
+                Crear Reporte
+            </button>
+            <button class="tab-btn" data-tab="mis-reportes">
+                Mis Reportes
+            </button>
+            <button class="tab-btn" data-tab="todos-reportes">
+                Todos los Reportes
+            </button>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TAB 1: CREAR REPORTE -->
+            <section id="crear-reporte" class="tab-content active">
+                <div class="form-container">
+                    <h2>Reportar Fuga de Agua</h2>
+                    <form id="formReporte" class="form">
+                        
+                        <!-- Tipo de Incidente -->
+                        <div class="form-group">
+                            <label for="tipoIncidente">Tipo de Incidente *</label>
+                            <select id="tipoIncidente" name="tipo_incidente" required>
+                                <option value="">Selecciona un tipo...</option>
+                                <option value="BANQUETA">Fuga en banqueta / vía pública</option>
+                                <option value="MEDIDOR">Fuga en el medidor</option>
+                                <option value="DRENAJE">Brote de aguas negras</option>
+                                <option value="OTRO">Otro tipo de reporte</option>
+                            </select>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="form-group">
+                            <label for="descripcion">Descripción del Problema *</label>
+                            <textarea id="descripcion" name="descripcion" rows="4" 
+                                    placeholder="Describe detalladamente la situación..." required></textarea>
+                        </div>
+
+                        <!-- Ubicación: GPS -->
+                        <div class="form-group">
+                            <label> Ubicación (GPS)</label>
+                            <button type="button" class="btn-secondary" onclick="obtenerUbicacion()">
+                                Obtener Mi Ubicación
+                            </button>
+                            <div id="ubicacionStatus" class="status-message"></div>
+                            
+                            <div class="coords-row">
+                                <div class="form-group-inline">
+                                    <label for="latitud">Latitud</label>
+                                    <input type="number" id="latitud" name="latitud" 
+                                        step="0.000001" placeholder="ej: 19.432608" readonly>
+                                </div>
+                                <div class="form-group-inline">
+                                    <label for="longitud">Longitud</label>
+                                    <input type="number" id="longitud" name="longitud" 
+                                        step="0.000001" placeholder="ej: -99.133209" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dirección Manual -->
+                        <div class="form-group">
+                            <label for="direccionManual">Dirección o Referencia</label>
+                            <input type="text" id="direccionManual" name="direccion_manual" 
+                                placeholder="ej: Calle Principal 123, frente a la tienda">
+                        </div>
+
+                        <!-- Foto -->
+                        <div class="form-group">
+                            <label for="foto">Foto de la Fuga (opcional)</label>
+                            <input type="file" id="foto" name="foto" accept="image/*">
+                            <div id="previewContainer"></div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Enviar Reporte</button>
+                            <button type="reset" class="btn-secondary">Limpiar Formulario</button>
+                        </div>
+
+                        <!-- Mensaje de Estado -->
+                        <div id="statusMessage" class="status-message"></div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 2: MIS REPORTES -->
+            <section id="mis-reportes" class="tab-content">
+                <div class="reports-container">
+                    <h2>Mis Reportes</h2>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="todos">Todos</button>
+                        <button class="filter-btn" data-filter="PENDIENTE">Pendientes</button>
+                        <button class="filter-btn" data-filter="PROGRESO">En Progreso</button>
+                        <button class="filter-btn" data-filter="RESUELTO">Resueltos</button>
+                    </div>
+                    <div id="misReportesContainer" class="reportes-grid">
+                        <p class="loading">Cargando reportes...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: TODOS LOS REPORTES -->
+            <section id="todos-reportes" class="tab-content">
+                <div class="reports-container">
+                    <h2>Todos los Reportes del Sistema</h2>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="todos">Todos</button>
+                        <button class="filter-btn" data-filter="BANQUETA">Banqueta</button>
+                        <button class="filter-btn" data-filter="MEDIDOR">Medidor</button>
+                        <button class="filter-btn" data-filter="DRENAJE">Drenaje</button>
+                    </div>
+                    <div id="todosReportesContainer" class="reportes-grid">
+                        <p class="loading">Cargando reportes...</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- MODAL PARA VER DETALLE -->
+        <div id="modalDetalle" class="modal hidden">
+            <div class="modal-content">
+                <button class="modal-close" onclick="cerrarModal()">&times;</button>
+                <div id="detalleContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/reportes.js"></script>
+</body>
+</html>

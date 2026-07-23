@@ -11,9 +11,7 @@ class RecursoSerializer(serializers.ModelSerializer):
         fields = ['id', 'titulo', 'descripcion', 'completado', 'fecha_creacion', 'owner']
 
 
-# ==========================================
-# NUEVO SERIALIZADOR
-# ==========================================
+
 class ReporteFugaSerializer(serializers.ModelSerializer):
     # 1. Campo personalizado de solo lectura para el nombre del usuario
     owner_username = serializers.ReadOnlyField(source='owner.username')
@@ -31,7 +29,7 @@ class ReporteFugaSerializer(serializers.ModelSerializer):
         fields = [
             'id', 
             'owner', 
-            'owner_username',  # Mostramos el nombre además del ID para comodidad del Frontend
+            'owner_username',  
             'tipo_incidente', 
             'descripcion', 
             'fecha_creacion', 

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de API - Reportes de Fugas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 1rem;
+        }
+
+        .test-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .test-section h2 {
+            color: #667eea;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .output {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .output.success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .output.error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .status.ok {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status.loading {
+            background: #dbeafe;
+            color: #0c2340;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-top: 1rem;
+            color: #333;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Prueba de API - Sistema de Reportes de Fugas</h1>
+
+        <!-- TEST 1: Información del Usuario -->
+        <div class="test-section">
+            <h2> Información del Usuario</h2>
+            <button onclick="testUsuario()">Obtener Usuario Actual</button>
+            <button onclick="testUsuarioPublico()">Obtener Usuario (Público)</button>
+            <div id="output-usuario" class="output"></div>
+        </div>
+
+        <!-- TEST 2: Obtener Reportes -->
+        <div class="test-section">
+            <h2>Obtener Reportes</h2>
+            <button onclick="testTodosReportes()">Obtener Todos los Reportes</button>
+            <button onclick="testMisReportes()">Obtener Mis Reportes</button>
+            <div id="output-reportes" class="output"></div>
+        </div>
+
+        <!-- TEST 3: Crear Reporte -->
+        <div class="test-section">
+            <h2>Crear Reporte</h2>
+            <label>Tipo de Incidente:</label>
+            <select id="tipoIncidente" style="width: 100%; padding: 0.75rem;">
+                <option value="BANQUETA">Fuga en banqueta</option>
+                <option value="MEDIDOR">Fuga en medidor</option>
+                <option value="DRENAJE">Brote de aguas negras</option>
+                <option value="OTRO">Otro</option>
+            </select>
+
+            <label>Descripción:</label>
+            <textarea id="descripcion" placeholder="Describe el problema..." style="height: 100px;"></textarea>
+
+            <label>Latitud:</label>
+            <input type="number" id="latitud" placeholder="19.432608" step="0.000001">
+
+            <label>Longitud:</label>
+            <input type="number" id="longitud" placeholder="-99.133209" step="0.000001">
+
+            <label>Dirección:</label>
+            <input type="text" id="direccion" placeholder="Calle Principal 123">
+
+            <button onclick="testCrearReporte()"> Crear Reporte</button>
+            <div id="output-crear" class="output"></div>
+        </div>
+
+        <!-- TEST 4: Obtener Reporte Específico -->
+        <div class="test-section">
+            <h2> Obtener Reporte Específico</h2>
+            <label>ID del Reporte (UUID):</label>
+            <input type="text" id="reporteId" placeholder="Copia el ID de un reporte aquí">
+            <button onclick="testObtenerReporte()"> Obtener Reporte</button>
+            <div id="output-reporte-especifico" class="output"></div>
+        </div>
+
+        <!-- TEST 5: Actualizar Reporte -->
+        <div class="test-section">
+            <h2> Actualizar Reporte</h2>
+            <label>ID del Reporte:</label>
+            <input type="text" id="reporteIdUpdate" placeholder="UUID del reporte">
+
+            <label>Nuevo Estatus:</label>
+            <select id="nuevoEstatus" style="width: 100%; padding: 0.75rem;">
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="PROGRESO">En Progreso</option>
+                <option value="RESUELTO">Resuelto</option>
+            </select>
+
+            <button onclick="testActualizarReporte()">Actualizar</button>
+            <div id="output-actualizar" class="output"></div>
+        </div>
+
+        <!-- TEST 6: Eliminar Reporte -->
+        <div class="test-section">
+            <h2> Eliminar Reporte</h2>
+            <label>ID del Reporte:</label>
+            <input type="text" id="reporteIdDelete" placeholder="UUID del reporte">
+            <button onclick="testEliminarReporte()" style="background: #ef4444;">🗑️ Eliminar</button>
+            <div id="output-eliminar" class="output"></div>
+        </div>
+
+        <!-- TEST 7: Geolocalización -->
+        <div class="test-section">
+            <h2> Geolocalización</h2>
+            <button onclick="testGPS()"> Obtener Ubicación GPS</button>
+            <div id="output-gps" class="output"></div>
+        </div>
+
+        <!-- INSTRUCCIONES -->
+        <div class="test-section" style="background: #e0f2fe; border-left: 4px solid #0284c7;">
+            <h2> Instrucciones</h2>
+            <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                <li><strong>Primero:</strong> Asegúrate de estar logueado en la aplicación</li>
+                <li><strong>Test 1:</strong> Verifica que la API devuelve tu información de usuario</li>
+                <li><strong>Test 2:</strong> Obtén la lista de reportes disponibles</li>
+                <li><strong>Test 3:</strong> Crea un nuevo reporte (deberías ver el ID en la respuesta)</li>
+                <li><strong>Test 4:</strong> Usa el ID del reporte creado para obtener sus detalles</li>
+                <li><strong>Test 5:</strong> Actualiza el estatus del reporte</li>
+                <li><strong>Test 6:</strong> Elimina el reporte (si quieres)</li>
+                <li><strong>Test 7:</strong> Verifica que tu navegador tiene permisos de geolocalización</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Utilidades
+        function log(elementId, text, isError = false) {
+            const el = document.getElementById(elementId);
+            el.textContent += text + '\n\n';
+            el.className = `output ${isError ? 'error' : 'success'}`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        function clear(elementId) {
+            document.getElementById(elementId).textContent = '';
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // TEST 1: Usuario Actual
+        async function testUsuario() {
+            clear('output-usuario');
+            log('output-usuario', 'Cargando...');
+            try {
+                const response = await fetch('/api/user-auth/');
+                const data = await response.json();
+                log('output-usuario', ' ÉXITO\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('output-usuario', 'ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 2: Usuario Público
+        async function testUsuarioPublico() {
+            clear('output-usuario');
+            log('output-usuario', 'Cargando...');
+            try {
+                const response = await fetch('/api/user/');
+                const data = await response.json();
+                log('output-usuario', 'ÉXITO\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('output-usuario', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 3: Todos los Reportes
+        async function testTodosReportes() {
+            clear('output-reportes');
+            log('output-reportes', 'Cargando...');
+            try {
+                const response = await fetch('/api/reportes-fuga/');
+                const data = await response.json();
+                const texto = Array.isArray(data) ? 
+                    `Total: ${data.length} reportes\n\n${JSON.stringify(data.slice(0, 2), null, 2)}...` :
+                    JSON.stringify(data, null, 2);
+                log('output-reportes', 'ÉXITO\n\n' + texto);
+            } catch (error) {
+                log('output-reportes', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 4: Mis Reportes
+        async function testMisReportes() {
+            clear('output-reportes');
+            log('output-reportes', ' Cargando...');
+            try {
+                const response = await fetch('/api/reportes-fuga/?owner=me');
+                const data = await response.json();
+                const texto = Array.isArray(data) ? 
+                    `Total: ${data.length} reportes tuyos\n\n${JSON.stringify(data, null, 2)}` :
+                    JSON.stringify(data, null, 2);
+                log('output-reportes', 'ÉXITO\n\n' + texto);
+            } catch (error) {
+                log('output-reportes', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 5: Crear Reporte
+        async function testCrearReporte() {
+            clear('output-crear');
+            log('output-crear', ' Creando reporte...');
+            try {
+                const datos = {
+                    tipo_incidente: document.getElementById('tipoIncidente').value,
+                    descripcion: document.getElementById('descripcion').value,
+                    latitud: document.getElementById('latitud').value ? parseFloat(document.getElementById('latitud').value) : null,
+                    longitud: document.getElementById('longitud').value ? parseFloat(document.getElementById('longitud').value) : null,
+                    direccion_manual: document.getElementById('direccion').value
+                };
+
+                if (!datos.descripcion || datos.descripcion.length < 10) {
+                    throw new Error('La descripción debe tener al menos 10 caracteres');
+                }
+
+                const response = await fetch('/api/reportes-fuga/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(JSON.stringify(error, null, 2));
+                }
+
+                const data = await response.json();
+                log('output-crear', 'REPORTE CREADO\n\n' + JSON.stringify(data, null, 2));
+                
+                // Copiar ID al campo de actualización
+                document.getElementById('reporteId').value = data.id;
+                document.getElementById('reporteIdUpdate').value = data.id;
+                document.getElementById('reporteIdDelete').value = data.id;
+            } catch (error) {
+                log('output-crear', 'ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 6: Obtener Reporte Específico
+        async function testObtenerReporte() {
+            clear('output-reporte-especifico');
+            const id = document.getElementById('reporteId').value;
+            
+            if (!id) {
+                log('output-reporte-especifico', ' Ingresa un ID de reporte', true);
+                return;
+            }
+
+            log('output-reporte-especifico', ' Cargando...');
+            try {
+                const response = await fetch(`/api/reportes-fuga/${id}/`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                log('output-reporte-especifico', 'ÉXITO\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('output-reporte-especifico', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 7: Actualizar Reporte
+        async function testActualizarReporte() {
+            clear('output-actualizar');
+            const id = document.getElementById('reporteIdUpdate').value;
+            
+            if (!id) {
+                log('output-actualizar', 'Ingresa un ID de reporte', true);
+                return;
+            }
+
+            log('output-actualizar', 'Actualizando...');
+            try {
+                const response = await fetch(`/api/reportes-fuga/${id}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        estatus: document.getElementById('nuevoEstatus').value
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(JSON.stringify(error, null, 2));
+                }
+
+                const data = await response.json();
+                log('output-actualizar', ' REPORTE ACTUALIZADO\n\n' + JSON.stringify(data, null, 2));
+            } catch (error) {
+                log('output-actualizar', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 8: Eliminar Reporte
+        async function testEliminarReporte() {
+            clear('output-eliminar');
+            const id = document.getElementById('reporteIdDelete').value;
+            
+            if (!id) {
+                log('output-eliminar', ' Ingresa un ID de reporte', true);
+                return;
+            }
+
+            if (!confirm('¿Estás seguro de que deseas eliminar este reporte?')) {
+                return;
+            }
+
+            log('output-eliminar', ' Eliminando...');
+            try {
+                const response = await fetch(`/api/reportes-fuga/${id}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+
+                if (response.status === 204) {
+                    log('output-eliminar', ' REPORTE ELIMINADO');
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                log('output-eliminar', ' ERROR\n\n' + error.message, true);
+            }
+        }
+
+        // TEST 9: GPS
+        async function testGPS() {
+            clear('output-gps');
+            
+            if (!navigator.geolocation) {
+                log('output-gps', ' Tu navegador no soporta geolocalización', true);
+                return;
+            }
+
+            log('output-gps', ' Obteniendo ubicación...\n\n Permite el acceso a tu ubicación en el navegador');
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+
+                    // Copiar a los campos del formulario
+                    document.getElementById('latitud').value = lat.toFixed(6);
+                    document.getElementById('longitud').value = lon.toFixed(6);
+
+                    log('output-gps', ` UBICACIÓN OBTENIDA\n\nLatitud: ${lat.toFixed(6)}\nLongitud: ${lon.toFixed(6)}\nPrecisión: ${accuracy.toFixed(0)} metros`);
+                },
+                (error) => {
+                    let mensaje = 'Error desconocido';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED: mensaje = 'Permiso denegado'; break;
+                        case error.POSITION_UNAVAILABLE: mensaje = 'Posición no disponible'; break;
+                        case error.TIMEOUT: mensaje = 'Tiempo agotado'; break;
+                    }
+                    log('output-gps', ` ERROR\n\n${mensaje}`, true);
+                }
+            );
+        }
+    </script>
+</body>
+</html>
