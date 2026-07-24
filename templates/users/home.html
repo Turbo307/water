@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reportes de Fugas de Agua</title>
+    <link rel="stylesheet" href="/static/css/users/home.css">
+</head>
+<body>
+    <div class="container">
+        <h1> Water System</h1>
+        <p class="subtitle">Sistema de Reportes de Fugas de Agua</p>
+
+        {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <div class="features">
+            <h3>Características</h3>
+            <ul>
+                <li>Reportar fugas de agua</li>
+                <li>Geolocalización automática (GPS)</li>
+                <li>Subir fotos de incidentes</li>
+                <li>Seguimiento de reportes</li>
+                <li>API REST completa</li>
+            </ul>
+        </div>
+
+        <div class="buttons">
+            {% if user.is_authenticated %}
+                <a href="/reportes-app/" class="btn btn-primary"> Mis Reportes</a>
+                <a href="/test-api/" class="btn btn-secondary"> API de Reportes de Agua</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary"> Iniciar Sesión</a>
+                <a href="{% url 'registro' %}" class="btn btn-secondary"> Crear Cuenta</a>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p>Sistema de reportes para gestión de fugas de agua</p>
+        </div>
+    </div>
+</body>
+</html>

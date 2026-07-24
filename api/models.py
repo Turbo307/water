@@ -4,10 +4,6 @@ from django.contrib.auth.models import User
 import uuid
 
 
-
-# ==========================================
-#  MODELO ANTERIOR 
-# ==========================================
 class Recurso(models.Model):
     titulo = models.CharField(max_length=100, blank=False, null=False)
     descripcion = models.TextField(blank=True, null=True)
@@ -24,9 +20,7 @@ class Recurso(models.Model):
     def __str__(self):
         return self.titulo
     
-# ==========================================
-# NUEVO MODELO 
-# ==========================================
+
     
 
 
