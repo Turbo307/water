@@ -1,110 +1,628 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Iniciar sesión</title>
+<html lang="es">
+
+<head>
+
+{% load static %}
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>WATER | Iniciar sesión</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/login.css' %}"
+>
+
 </head>
 
 <body>
 
-    <h1>Iniciar sesión</h1>
+<main class="login-page">
 
-    <form id="login-form">
 
-        <div>
-            <label for="username">
-                Usuario
-            </label>
+    <!-- =========================================
+         PANEL DE INFORMACIÓN
+    ========================================== -->
 
-            <input
-                type="text"
-                id="username"
-                required
-            >
+    <section class="login-image">
+
+
+        <div class="image-overlay">
+
+
+            <header class="brand">
+
+                <div class="brand-mark">
+                    W
+                </div>
+
+                <div class="brand-name">
+                    WATER
+                </div>
+
+            </header>
+
+
+
+            <div class="image-content">
+
+                <span class="section-label">
+                    SISTEMA DE GESTIÓN
+                </span>
+
+                <h1>
+                    Reportes y atención
+                    de fugas de agua
+                </h1>
+
+                <p>
+                    Administra los reportes registrados
+                    y facilita la atención de problemas
+                    relacionados con la infraestructura
+                    hidráulica.
+                </p>
+
+            </div>
+
+
+
+            <footer class="image-footer">
+
+                WATER — Sistema de gestión
+                de reportes
+
+            </footer>
+
+
         </div>
 
-        <br>
 
-        <div>
-            <label for="password">
-                Contraseña
-            </label>
+    </section>
 
-            <input
-                type="password"
-                id="password"
-                required
-            >
+
+
+    <!-- =========================================
+         PANEL DE LOGIN
+    ========================================== -->
+
+    <section class="login-section">
+
+
+        <div class="login-card">
+
+
+            <header class="login-header">
+
+
+                <span class="login-label">
+                    ACCESO ADMINISTRATIVO
+                </span>
+
+
+                <h2>
+                    Iniciar sesión
+                </h2>
+
+
+                <p>
+                    Ingresa tus credenciales para
+                    acceder al panel administrativo.
+                </p>
+
+
+            </header>
+
+
+
+            <!-- =========================================
+                 FORMULARIO
+            ========================================== -->
+
+            <form id="login-form">
+
+
+                <!-- USUARIO -->
+
+                <div class="form-group">
+
+
+                    <label for="username">
+                        Usuario
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <!-- Icono usuario -->
+
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+
+                            <path
+                                d="M20 21C20 17.6863 17.3137 15 14 15H10C6.68629 15 4 17.6863 4 21"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+
+                            <circle
+                                cx="12"
+                                cy="7"
+                                r="4"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            />
+
+                        </svg>
+
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Ingresa tu usuario"
+                            autocomplete="username"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- CONTRASEÑA -->
+
+                <div class="form-group">
+
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <!-- Icono candado -->
+
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+
+                            <rect
+                                x="4"
+                                y="10"
+                                width="16"
+                                height="11"
+                                rx="2"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            />
+
+                            <path
+                                d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+
+                        </svg>
+
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Ingresa tu contraseña"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+
+                        <!-- BOTÓN MOSTRAR CONTRASEÑA -->
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="password-toggle"
+                            aria-label="Mostrar contraseña"
+                        >
+
+
+                            <!-- OJO CERRADO -->
+
+                            <svg
+                                id="eye-closed"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+
+                                <path
+                                    d="M2.5 12C2.5 12 6 5.5 12 5.5C18 5.5 21.5 12 21.5 12C21.5 12 18 18.5 12 18.5C6 18.5 2.5 12 2.5 12Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="2.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                />
+
+                            </svg>
+
+
+                            <!-- OJO ABIERTO -->
+
+                            <svg
+                                id="eye-open"
+                                class="hidden"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+
+                                <path
+                                    d="M3 3L21 21"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M10.6 10.6C10.2 11 10 11.5 10 12C10 13.1 10.9 14 12 14C12.5 14 13 13.8 13.4 13.4"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M6.7 6.7C4.2 8.2 2.5 12 2.5 12C2.5 12 6 18.5 12 18.5C14.1 18.5 15.9 17.7 17.3 16.6"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                                <path
+                                    d="M9.8 5.8C10.5 5.6 11.2 5.5 12 5.5C18 5.5 21.5 12 21.5 12C21.5 12 20.3 14.2 18.3 15.9"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BOTÓN LOGIN -->
+
+                <button
+                    type="submit"
+                    id="login-button"
+                    class="login-button"
+                >
+
+                    Iniciar sesión
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- MENSAJE -->
+
+            <div
+                id="mensaje"
+                class="mensaje"
+            ></div>
+
+
+
+            <!-- FOOTER -->
+
+            <footer class="login-footer">
+
+                <p>
+                    WATER
+                </p>
+
+                <span>
+                    Sistema de gestión de reportes de fugas de agua
+                </span>
+
+            </footer>
+
+
         </div>
 
-        <br>
 
-        <button type="submit">
-            Iniciar sesión
-        </button>
-
-    </form>
-
-    <p id="mensaje"></p>
+    </section>
 
 
-    <script>
+</main>
 
-        const formulario = document.getElementById("login-form");
 
-        formulario.addEventListener("submit", async function(event) {
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script>
+
+
+    /* =========================================
+       ELEMENTOS
+    ========================================== */
+
+    const formulario =
+        document.getElementById(
+            "login-form"
+        );
+
+
+    const botonLogin =
+        document.getElementById(
+            "login-button"
+        );
+
+
+    const passwordInput =
+        document.getElementById(
+            "password"
+        );
+
+
+    const passwordToggle =
+        document.getElementById(
+            "password-toggle"
+        );
+
+
+    const eyeClosed =
+        document.getElementById(
+            "eye-closed"
+        );
+
+
+    const eyeOpen =
+        document.getElementById(
+            "eye-open"
+        );
+
+
+    const mensaje =
+        document.getElementById(
+            "mensaje"
+        );
+
+
+
+    /* =========================================
+       MOSTRAR / OCULTAR CONTRASEÑA
+    ========================================== */
+
+    passwordToggle.addEventListener(
+        "click",
+        function() {
+
+
+            const isPassword =
+                passwordInput.type === "password";
+
+
+            if (isPassword) {
+
+
+                passwordInput.type =
+                    "text";
+
+
+                eyeClosed.classList.add(
+                    "hidden"
+                );
+
+
+                eyeOpen.classList.remove(
+                    "hidden"
+                );
+
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Ocultar contraseña"
+                );
+
+
+            } else {
+
+
+                passwordInput.type =
+                    "password";
+
+
+                eyeOpen.classList.add(
+                    "hidden"
+                );
+
+
+                eyeClosed.classList.remove(
+                    "hidden"
+                );
+
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Mostrar contraseña"
+                );
+
+
+            }
+
+
+        }
+    );
+
+
+
+    /* =========================================
+       LOGIN
+    ========================================== */
+
+    formulario.addEventListener(
+        "submit",
+        async function(event) {
+
 
             event.preventDefault();
 
+
+
             const username =
-                document.getElementById("username").value;
+                document
+                .getElementById(
+                    "username"
+                )
+                .value;
+
+
 
             const password =
-                document.getElementById("password").value;
+                document
+                .getElementById(
+                    "password"
+                )
+                .value;
 
-            const mensaje =
-                document.getElementById("mensaje");
+
+
+            /* Deshabilitar botón */
+
+            botonLogin.disabled =
+                true;
+
+
+            botonLogin.textContent =
+                "Iniciando sesión...";
+
+
+
+            mensaje.textContent =
+                "";
+
 
 
             try {
 
-                const respuesta = await fetch("/api/token/", {
 
-                    method: "POST",
+                const respuesta =
+                    await fetch(
+                        "/api/token/",
+                        {
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                            method: "POST",
 
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
+                            headers: {
 
-                });
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    username:
+                                        username,
+
+                                    password:
+                                        password
+
+                                })
+
+                        }
+                    );
 
 
-                const datos = await respuesta.json();
 
+                const datos =
+                    await respuesta.json();
+
+
+
+                /* =================================
+                   ERROR DE AUTENTICACIÓN
+                ================================= */
 
                 if (!respuesta.ok) {
+
 
                     mensaje.textContent =
                         "Usuario o contraseña incorrectos.";
 
-                    console.error(datos);
+
+                    mensaje.className =
+                        "mensaje error";
+
+
+                    botonLogin.disabled =
+                        false;
+
+
+                    botonLogin.textContent =
+                        "Iniciar sesión";
+
 
                     return;
+
+
                 }
 
 
-                // Guardamos los tokens
+
+                /* =================================
+                   GUARDAR TOKENS
+                ================================= */
+
                 localStorage.setItem(
                     "access_token",
                     datos.access
                 );
+
 
                 localStorage.setItem(
                     "refresh_token",
@@ -112,31 +630,61 @@
                 );
 
 
+
+                /* =================================
+                   LOGIN EXITOSO
+                ================================= */
+
                 mensaje.textContent =
-                    "¡Inicio de sesión exitoso!";
-
-                // ir a dashboard
-                window.location.href = "/dashboard/";
+                    "Inicio de sesión exitoso.";
 
 
-                console.log(
-                    "Access Token:",
-                    datos.access
+                mensaje.className =
+                    "mensaje exito";
+
+
+
+                /* Redirigir */
+
+                window.location.href =
+                    "/dashboard/";
+
+
+            }
+
+
+            catch (error) {
+
+
+                console.error(
+                    error
                 );
 
-
-            } catch (error) {
-
-                console.error(error);
 
                 mensaje.textContent =
                     "Error al conectar con el servidor.";
 
+
+                mensaje.className =
+                    "mensaje error";
+
+
+                botonLogin.disabled =
+                    false;
+
+
+                botonLogin.textContent =
+                    "Iniciar sesión";
+
+
             }
 
-        });
 
-    </script>
+        }
+    );
+
+
+</script>
 
 </body>
 

@@ -1,0 +1,737 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+
+font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+min-height: 100vh;
+
+background-color:
+    #f3f5f7;
+
+color:
+    #243746;
+
+}
+
+/* =========================================
+CONTENEDOR PRINCIPAL
+========================================= */
+
+.login-page {
+
+min-height: 100vh;
+
+display: flex;
+
+}
+
+/* =========================================
+PANEL DE IMAGEN
+========================================= */
+
+.login-image {
+
+width: 56%;
+
+min-height: 100vh;
+
+position: relative;
+
+background-image:
+    url("https://tse1.mm.bing.net/th/id/OIP.90V9BlstL1s0GNDfjgzZWgHaE_?r=0&rs=1&pid=ImgDetMain&o=7&rm=3");
+
+background-size: cover;
+
+background-position: center;
+
+}
+
+.image-overlay {
+
+position: absolute;
+
+inset: 0;
+
+display: flex;
+
+flex-direction: column;
+
+justify-content: space-between;
+
+padding:
+    42px 55px;
+
+background:
+    rgba(7, 38, 58, 0.52);
+
+color:
+    #ffffff;
+
+}
+
+/* =========================================
+MARCA
+========================================= */
+
+.brand {
+
+display: flex;
+
+align-items: center;
+
+gap: 12px;
+
+}
+
+.brand-mark {
+
+width: 42px;
+
+height: 42px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+border:
+    1px solid
+    rgba(255, 255, 255, 0.7);
+
+font-size: 18px;
+
+font-weight: bold;
+
+}
+
+.brand-name {
+
+font-size: 21px;
+
+font-weight: bold;
+
+letter-spacing: 4px;
+
+}
+
+/* =========================================
+CONTENIDO IMAGEN
+========================================= */
+
+.image-content {
+
+max-width: 580px;
+
+}
+
+.section-label {
+
+display: block;
+
+margin-bottom: 18px;
+
+font-size: 11px;
+
+font-weight: bold;
+
+letter-spacing: 2px;
+
+color:
+    rgba(255, 255, 255, 0.75);
+
+}
+
+.image-content h1 {
+
+max-width: 600px;
+
+margin-bottom: 22px;
+
+font-size: 48px;
+
+line-height: 1.12;
+
+font-weight: 600;
+
+}
+
+.image-content p {
+
+max-width: 520px;
+
+font-size: 16px;
+
+line-height: 1.7;
+
+color:
+    rgba(255, 255, 255, 0.85);
+
+}
+
+/* =========================================
+FOOTER IMAGEN
+========================================= */
+
+.image-footer {
+
+font-size: 12px;
+
+color:
+    rgba(255, 255, 255, 0.65);
+
+}
+
+/* =========================================
+PANEL LOGIN
+========================================= */
+
+.login-section {
+
+width: 44%;
+
+min-height: 100vh;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+padding:
+    50px;
+
+background:
+    #ffffff;
+
+}
+
+/* =========================================
+TARJETA LOGIN
+========================================= */
+
+.login-card {
+
+width: 100%;
+
+max-width: 430px;
+
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.login-header {
+
+margin-bottom: 38px;
+
+}
+
+.login-label {
+
+display: block;
+
+margin-bottom: 14px;
+
+font-size: 11px;
+
+font-weight: bold;
+
+letter-spacing: 1.8px;
+
+color:
+    #1681b8;
+
+}
+
+.login-header h2 {
+
+margin-bottom: 12px;
+
+color:
+    #203746;
+
+font-size: 36px;
+
+font-weight: 600;
+
+}
+
+.login-header p {
+
+color:
+    #71808c;
+
+font-size: 14px;
+
+line-height: 1.6;
+
+}
+
+/* =========================================
+GRUPOS
+========================================= */
+
+.form-group {
+
+margin-bottom: 23px;
+
+}
+
+.form-group label {
+
+display: block;
+
+margin-bottom: 8px;
+
+color:
+    #344955;
+
+font-size: 13px;
+
+font-weight: 600;
+
+}
+
+/* =========================================
+INPUT WRAPPER
+========================================= */
+
+.input-wrapper {
+
+position: relative;
+
+display: flex;
+
+align-items: center;
+
+}
+
+/* =========================================
+ICONOS INPUT
+========================================= */
+
+.input-icon {
+
+position: absolute;
+
+left: 15px;
+
+width: 19px;
+
+height: 19px;
+
+color:
+    #8a9aa5;
+
+pointer-events: none;
+
+}
+
+/* =========================================
+INPUT
+========================================= */
+
+.input-wrapper input {
+
+width: 100%;
+
+height: 52px;
+
+padding:
+    0 48px;
+
+border:
+    1px solid
+    #d9e1e6;
+
+border-radius:
+    6px;
+
+background:
+    #ffffff;
+
+color:
+    #263b49;
+
+font-size: 14px;
+
+outline: none;
+
+transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+}
+
+.input-wrapper input {
+
+border-color:
+    #1681b8;
+
+box-shadow:
+    0 0 0 3px
+    rgba(22, 129, 184, 0.10);
+
+}
+
+.input-wrapper input::placeholder {
+
+color:
+    #a4afb6;
+
+}
+
+/* =========================================
+BOTÓN OJO
+========================================= */
+
+.password-toggle {
+
+position: absolute;
+
+right: 12px;
+
+width: 34px;
+
+height: 34px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+border: none;
+
+background:
+    transparent;
+
+color:
+    #8797a2;
+
+cursor: pointer;
+
+}
+
+.password-toggle {
+
+color:
+    #1681b8;
+
+}
+
+.password-toggle svg {
+
+width: 19px;
+
+height: 19px;
+
+}
+
+/* Ocultar icono */
+
+.hidden {
+
+display: none;
+
+}
+
+/* =========================================
+   BOTÓN LOGIN
+========================================= */
+
+.login-button {
+
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #1678a8;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
+
+}
+
+
+/* Cuando pasas el mouse */
+
+.login-button:hover {
+
+    background: #12688f;
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* Cuando haces clic */
+
+.login-button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* Mientras está iniciando sesión */
+
+.login-button:disabled {
+
+    background: #8caab9;
+
+    cursor: default;
+
+    transform: none;
+
+}
+
+/* =========================================
+MENSAJE
+========================================= */
+
+.mensaje {
+
+min-height: 20px;
+
+margin-top: 18px;
+
+text-align: center;
+
+font-size: 13px;
+
+font-weight: 600;
+
+}
+
+.mensaje.error {
+
+color:
+    #c0392b;
+
+}
+
+.mensaje.exito {
+
+color:
+    #218c5a;
+
+}
+
+/* =========================================
+FOOTER LOGIN
+========================================= */
+
+.login-footer {
+
+margin-top: 42px;
+
+padding-top: 20px;
+
+border-top:
+    1px solid
+    #edf0f2;
+
+text-align: center;
+
+}
+
+.login-footer p {
+
+margin-bottom: 5px;
+
+color:
+    #52636e;
+
+font-size: 12px;
+
+font-weight: 600;
+
+letter-spacing: 1px;
+
+}
+
+.login-footer span {
+
+color:
+    #9aa5ad;
+
+font-size: 11px;
+
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+.login-image {
+
+    width: 48%;
+
+}
+
+
+.login-section {
+
+    width: 52%;
+
+    padding:
+        35px;
+
+}
+
+
+.image-overlay {
+
+    padding:
+        35px;
+
+}
+
+
+.image-content h1 {
+
+    font-size:
+        38px;
+
+}
+
+}
+
+@media (max-width: 700px) {
+
+.login-page {
+
+    flex-direction:
+        column;
+
+}
+
+
+.login-image {
+
+    width: 100%;
+
+    min-height:
+        300px;
+
+}
+
+
+.login-section {
+
+    width: 100%;
+
+    min-height:
+        auto;
+
+    padding:
+        45px 25px;
+
+}
+
+
+.image-overlay {
+
+    padding:
+        30px;
+
+}
+
+
+.image-content h1 {
+
+    font-size:
+        32px;
+
+}
+
+
+.image-content p {
+
+    font-size:
+        14px;
+
+}
+
+
+.image-footer {
+
+    display:
+        none;
+
+}
+
+}
+
+@media (max-width: 450px) {
+
+.login-image {
+
+    min-height:
+        240px;
+
+}
+
+
+.brand-name {
+
+    font-size:
+        18px;
+
+}
+
+
+.image-content h1 {
+
+    font-size:
+        27px;
+
+}
+
+
+.image-content p {
+
+    font-size:
+        13px;
+
+}
+
+
+.login-header h2 {
+
+    font-size:
+        30px;
+
+}
+
+}
