@@ -213,7 +213,7 @@ def detalle_reporte(request, id):
 
         request,
 
-        "admin/detalle_reporte.html",
+        "dashboard/detalle_reporte.html",
 
         {
             "reporte":

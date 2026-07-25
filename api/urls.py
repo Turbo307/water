@@ -43,7 +43,7 @@ urlpatterns = [
     # =========================================
 
     path(
-        "admin/login/",
+        "admin-login/",
         views.login_page,
         name="admin_login"
     ),

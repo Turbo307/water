@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build: .
@@ -10,7 +8,27 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=True
-    # Si en el futuro necesitamos una base de datos externa, se vincula aqui abajo:
-    # depends_on:
-    #   - db
+      DEBUG: "True"
+      POSTGRES_DB: water_db
+      POSTGRES_USER: water_user
+      POSTGRES_PASSWORD: water_password
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    container_name: Water_Report_DB
+    restart: always
+    environment:
+      POSTGRES_DB: water_db
+      POSTGRES_USER: water_user
+      POSTGRES_PASSWORD: water_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

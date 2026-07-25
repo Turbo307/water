@@ -1,237 +1,200 @@
+
 {% extends 'dashboard/base.html' %}
 
 {% block title %}Detalle del Reporte{% endblock %}
 
 {% block content %}
-
 <h1>Detalle del Reporte</h1>
-
+<div id="mensaje-estado" class="mensaje-estado"></div>
 <div id="detalle-reporte">
-
     <p>Cargando información del reporte...</p>
-
 </div>
 
-
 <script>
-
-    // Obtenemos el ID desde la URL
-    const partesUrl =
-        window.location.pathname.split("/");
-
-    // La URL es:
-    // /reportes/<uuid>/
-    // Por eso el ID está en la posición 2
+    // =========================================
+    // OBTENER ID DEL REPORTE
+    // =========================================
+    // La URL tiene esta estructura: /reportes/<uuid>/
+    const partesUrl = window.location.pathname.split("/");
     const reporteId = partesUrl[2];
 
+    // =========================================
+    // OBTENER TOKEN JWT
+    // =========================================
+    const token = localStorage.getItem("access_token");
 
-    // Obtenemos el token JWT
-    const token =
-        localStorage.getItem("access_token");
+    // =========================================
+    // ELEMENTOS DEL DOM
+    // =========================================
+    const contenedor = document.getElementById("detalle-reporte");
+    const mensajeEstado = document.getElementById("mensaje-estado");
 
+    // =========================================
+    // FUNCIÓN PARA MOSTRAR MENSAJES
+    // =========================================
+    function mostrarMensaje(mensaje, tipo) {
+        mensajeEstado.textContent = mensaje;
+        mensajeEstado.className = `mensaje-estado ${tipo}`;
+    }
 
-    // Contenedor donde mostraremos la información
-    const contenedor =
-        document.getElementById(
-            "detalle-reporte"
-        );
-
-
-    // Consultamos la API
-    fetch(
-        `/api/reportes-fuga/${reporteId}/`,
-        {
-
-            method: "GET",
-
-            headers: {
-
-                "Authorization":
-                    `Bearer ${token}`,
-
-                "Content-Type":
-                    "application/json"
-
-            }
-
+    // =========================================
+    // CARGAR REPORTE
+    // =========================================
+    fetch(`/api/reportes-fuga/${reporteId}/`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
         }
-    )
-
+    })
     .then(response => {
-
         if (!response.ok) {
-
-            throw new Error(
-                "No se pudo obtener el reporte"
-            );
-
+            throw new Error("No se pudo obtener el reporte");
         }
-
         return response.json();
-
     })
-
     .then(reporte => {
+        console.log("Reporte recibido:", reporte);
 
-        console.log(
-            "Reporte recibido:",
-            reporte
-        );
-
-
+        // =========================================
+        // MOSTRAR INFORMACIÓN
+        // =========================================
         contenedor.innerHTML = `
-
             <div class="detalle-item">
-
                 <strong>ID:</strong>
-
-                <p>
-                    ${reporte.id}
-                </p>
-
+                <p>${reporte.id}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Usuario:</strong>
-
-                <p>
-                    ${reporte.owner_username || "Sin usuario"}
-                </p>
-
+                <p>${reporte.owner_username || "Sin usuario"}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Tipo de incidente:</strong>
-
-                <p>
-                    ${reporte.tipo_incidente || "Sin tipo"}
-                </p>
-
+                <p>${reporte.tipo_incidente || "Sin tipo"}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Descripción:</strong>
-
-                <p>
-                    ${reporte.descripcion || "Sin descripción"}
-                </p>
-
+                <p>${reporte.descripcion || "Sin descripción"}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Dirección:</strong>
-
-                <p>
-                    ${reporte.direccion_manual || "Sin dirección"}
-                </p>
-
+                <p>${reporte.direccion_manual || "Sin dirección"}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Latitud:</strong>
-
-                <p>
-                    ${reporte.latitud || "Sin ubicación"}
-                </p>
-
+                <p>${reporte.latitud || "Sin ubicación"}</p>
             </div>
 
-
             <div class="detalle-item">
-
                 <strong>Longitud:</strong>
-
-                <p>
-                    ${reporte.longitud || "Sin ubicación"}
-                </p>
-
+                <p>${reporte.longitud || "Sin ubicación"}</p>
             </div>
 
-
+            <!-- ESTADO ACTUAL -->
             <div class="detalle-item">
-
-                <strong>Estado:</strong>
-
-                <p>
-                    ${reporte.estatus || "Sin estado"}
-                </p>
-
+                <strong>Estado actual:</strong>
+                <p id="estado-actual">${reporte.estatus || "Sin estado"}</p>
             </div>
 
+            <!-- CAMBIAR ESTADO -->
+            <div class="detalle-item">
+                <strong>Actualizar estado:</strong>
+                <select id="nuevo-estado">
+                    <option value="PENDIENTE" ${reporte.estatus === "PENDIENTE" ? "selected" : ""}>
+                        Pendiente
+                    </option>
+                    <option value="PROGRESO" ${reporte.estatus === "PROGRESO" ? "selected" : ""}>
+                        En atención
+                    </option>
+                    <option value="RESUELTO" ${reporte.estatus === "RESUELTO" ? "selected" : ""}>
+                        Solucionado
+                    </option>
+                </select>
+                <button type="button" id="actualizar-estado">Actualizar estado</button>
+            </div>
 
             <div class="detalle-item">
-
                 <strong>Fecha:</strong>
-
                 <p>
-                    ${
-                        reporte.fecha_creacion
-                            ? new Date(
-                                reporte.fecha_creacion
-                              ).toLocaleString("es-MX")
-                            : "Sin fecha"
-                    }
+                    ${reporte.fecha_creacion 
+                        ? new Date(reporte.fecha_creacion).toLocaleString("es-MX") 
+                        : "Sin fecha"}
                 </p>
-
             </div>
-
 
             <div class="detalle-item">
-
                 <strong>Fotografía:</strong>
-
-                ${
-                    reporte.foto
-
-                    ? `
-                        <img
-                            src="${reporte.foto}"
-                            alt="Fotografía del reporte"
-                        >
-                      `
-
-                    : `
-                        <p>
-                            No hay fotografía.
-                        </p>
-                      `
-                }
-
+                ${reporte.foto ? `
+                    <img src="${reporte.foto}" alt="Fotografía del reporte" style="max-width: 500px; width: 100%; height: auto; margin-top: 10px; border-radius: 8px;">
+                ` : `
+                    <p>No hay fotografía.</p>
+                `}
             </div>
-
         `;
 
+        // =========================================
+        // BOTÓN ACTUALIZAR ESTADO
+        // =========================================
+        const botonActualizar = document.getElementById("actualizar-estado");
+        botonActualizar.addEventListener("click", actualizarEstado);
     })
-
     .catch(error => {
-
-        console.error(
-            "Error:",
-            error
-        );
-
-
-        contenedor.innerHTML = `
-
-            <p>
-                No se pudo cargar el detalle
-                del reporte.
-            </p>
-
-        `;
-
+        console.error("Error:", error);
+        contenedor.innerHTML = `<p>No se pudo cargar el detalle del reporte.</p>`;
     });
 
-</script>
+    // =========================================
+    // FUNCIÓN ACTUALIZAR ESTADO
+    // =========================================
+    async function actualizarEstado() {
+        const nuevoEstado = document.getElementById("nuevo-estado").value;
+        const botonActualizar = document.getElementById("actualizar-estado");
 
+        // Desactivar botón mientras se procesa
+        botonActualizar.disabled = true;
+        botonActualizar.textContent = "Actualizando...";
+        mensajeEstado.textContent = "";
+
+        try {
+            // ENVIAR CAMBIO A LA API
+            const respuesta = await fetch(`/api/reportes-fuga/${reporteId}/`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    estatus: nuevoEstado
+                })
+            });
+
+            const datos = await respuesta.json();
+
+            // VALIDAR RESPUESTA
+            if (!respuesta.ok) {
+                console.error("Error de API:", datos);
+                throw new Error("No se pudo actualizar el estado");
+            }
+
+            // ACTUALIZAR TEXTO EN PANTALLA
+            const estadoActual = document.getElementById("estado-actual");
+            estadoActual.textContent = nuevoEstado;
+
+            // MENSAJE DE ÉXITO
+            mostrarMensaje("Estado actualizado correctamente.", "exito");
+        } catch (error) {
+            console.error("Error:", error);
+            mostrarMensaje("No se pudo actualizar el estado del reporte.", "error");
+        } finally {
+            // Reactivar botón
+            botonActualizar.disabled = false;
+            botonActualizar.textContent = "Actualizar estado";
+        }
+    }
+</script>
 {% endblock %}

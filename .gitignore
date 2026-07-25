@@ -5,3 +5,14 @@ __pycache__/
 .env
 .env.local
 venv/
+
+# Archivos de IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
