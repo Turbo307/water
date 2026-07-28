@@ -1,0 +1,114 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+
+{% block styles %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/admin/reportes.css' %}"
+>
+
+{% endblock %}
+
+
+{% block title %}
+
+    Reportes
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =========================================================
+     ENCABEZADO DE REPORTES
+========================================================= -->
+
+<div class="reportes-header">
+
+    <h1>
+        Reportes de Fugas
+    </h1>
+
+    <p>
+        Aquí se muestran todos los reportes registrados por los usuarios.
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     TABLA DE REPORTES
+========================================================= -->
+
+<div class="tabla-reportes-container">
+
+    <table class="tabla-reportes">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Tipo
+                </th>
+
+                <th>
+                    Usuario
+                </th>
+
+                <th>
+                    Dirección
+                </th>
+
+                <th>
+                    Estado
+                </th>
+
+                <th>
+                    Fecha
+                </th>
+
+                <th>
+                    Acciones
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="tabla-reportes-body">
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="text-align:center;"
+                >
+
+                    Cargando reportes...
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script
+    src="{% static 'js/admin/reportes.js' %}"
+></script>
+
+{% endblock %}s

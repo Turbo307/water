@@ -170,7 +170,7 @@ def dashboard(request):
 
         request,
 
-        "dashboard/dashboard.html",
+        "admin/dashboard.html",
 
         context
 
@@ -194,7 +194,7 @@ def reportes(request):
 
         request,
 
-        "dashboard/reportes.html",
+        "admin/reportes.html",
 
         context
 
@@ -213,7 +213,7 @@ def detalle_reporte(request, id):
 
         request,
 
-        "dashboard/detalle_reporte.html",
+        "admin/detalle_reporte.html",
 
         {
             "reporte":
@@ -233,7 +233,7 @@ def login_page(request):
 
         request,
 
-        "login/login.html"
+        "admin/login.html"
 
     )
 

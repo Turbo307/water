@@ -1,0 +1,228 @@
+/* =========================================================
+   REPORTES - HEADER
+========================================================= */
+
+.reportes-header {
+    margin-bottom: 30px;
+}
+
+
+.reportes-header h1 {
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+
+.reportes-header p {
+    color: var(--color-text-light);
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   CONTENEDOR DE LA TABLA
+========================================================= */
+
+.tabla-reportes-container {
+    width: 100%;
+
+    background-color: var(--color-white);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: 8px;
+
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+   TABLA DE REPORTES
+========================================================= */
+
+.tabla-reportes {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 900px;
+}
+
+
+/* =========================================================
+   ENCABEZADO DE TABLA
+========================================================= */
+
+.tabla-reportes thead {
+    background-color: #f7f7f7;
+}
+
+
+.tabla-reportes th {
+    text-align: left;
+
+    padding: 15px 18px;
+
+    font-size: 13px;
+
+    color: var(--color-text-light);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    white-space: nowrap;
+
+    border-bottom:
+        1px solid
+        var(--color-border);
+}
+
+
+/* =========================================================
+   CELDAS
+========================================================= */
+
+.tabla-reportes td {
+    padding: 16px 18px;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+
+    border-bottom:
+        1px solid
+        var(--color-border);
+}
+
+
+/* =========================================================
+   FILAS
+========================================================= */
+
+.tabla-reportes tbody tr {
+
+    transition:
+        background-color
+        0.2s ease;
+
+}
+
+
+.tabla-reportes tbody tr:hover {
+
+    background-color:
+        #fafafa;
+
+}
+
+
+/* =========================================================
+   COLUMNA DE TIPO
+========================================================= */
+
+.tabla-reportes td:first-child {
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   COLUMNA DE DIRECCIÓN
+========================================================= */
+
+.tabla-reportes td:nth-child(3) {
+
+    max-width: 300px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+
+.tabla-reportes td:nth-child(4) {
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   BOTÓN VER DETALLE
+========================================================= */
+
+.tabla-reportes td:last-child {
+
+    white-space: nowrap;
+
+}
+
+
+.tabla-reportes td:last-child a {
+
+    display: inline-block;
+
+    background-color:
+        var(--color-primary);
+
+    color:
+        var(--color-white);
+
+    text-decoration: none;
+
+    padding:
+        8px 14px;
+
+    border-radius:
+        5px;
+
+    font-size:
+        13px;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.tabla-reportes td:last-child a:hover {
+
+    background-color:
+        var(--color-secondary);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .reportes-header h1 {
+
+        font-size: 24px;
+
+    }
+
+
+    .tabla-reportes-container {
+
+        border-radius: 6px;
+
+    }
+
+}

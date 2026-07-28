@@ -1,0 +1,141 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+            Water Admin
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin/base.css' %}"
+    >
+
+      {% block styles %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <h1 class="logo">
+                WATER
+            </h1>
+
+            <span class="panel-name">
+                Panel Administrativo
+            </span>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <span class="admin-name">
+                Administrador
+            </span>
+
+            <button
+                type="button"
+                class="logout-button"
+            >
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ESTRUCTURA PRINCIPAL -->
+
+    <div class="admin-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <h2>
+                    Menú
+                </h2>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="nav-link"
+                >
+                    Dashboard
+                </a>
+
+
+                <a
+                    href="{% url 'reportes' %}"
+                    class="nav-link"
+                >
+                    Reportes
+                </a>
+
+
+            </nav>
+
+        </aside>
+
+
+        <!-- CONTENIDO -->
+
+        <main class="main-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            Water API — Panel Administrativo
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>

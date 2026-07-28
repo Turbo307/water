@@ -1,0 +1,86 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+
+{% block styles %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/admin/detalle_reporte.css' %}"
+>
+
+{% endblock %}
+
+
+{% block title %}
+
+    Detalle del Reporte
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="detail-page">
+
+    <!-- ENCABEZADO -->
+
+    <div class="detail-header">
+
+        <div>
+
+            <h1>
+                Detalle del Reporte
+            </h1>
+
+            <p>
+                Información detallada del reporte seleccionado.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'reportes' %}"
+            class="back-button"
+        >
+            Volver a reportes
+        </a>
+
+    </div>
+
+
+    <!-- MENSAJE DE ESTADO -->
+
+    <div
+        id="mensaje-estado"
+        class="mensaje-estado"
+    ></div>
+
+
+    <!-- CONTENIDO -->
+
+    <section
+        id="detalle-reporte"
+        class="detail-container"
+    >
+
+        <p>
+            Cargando información del reporte...
+        </p>
+
+    </section>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script
+    src="{% static 'js/admin/detalle_reporte.js' %}"
+></script>
+
+{% endblock %}
