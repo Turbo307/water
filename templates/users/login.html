@@ -1,45 +1,226 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Sistema de Reportes de Fugas</title>
-    <link rel="stylesheet" href="/static/css/users/login.css">
-</head>
-<body>
-    <div class="login-page">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>Iniciar Sesión</h1>
-                <p>Ingresa tus datos para acceder al panel de reportes.</p>
+{% extends 'users/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+
+    Iniciar sesión | Water Report
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/users/login.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="login-page">
+
+
+    <div class="login-container">
+
+
+        <!-- =========================================
+             INFORMACIÓN
+        ========================================== -->
+
+        <div class="login-intro">
+
+
+            <span class="login-intro__tag">
+
+                WATER REPORT
+
+            </span>
+
+
+            <h1>
+
+                Bienvenido de nuevo.
+
+            </h1>
+
+
+            <p>
+
+                Inicia sesión para reportar una fuga,
+                consultar tus reportes y conocer el
+                estado de cada uno.
+
+            </p>
+
+
+            <div class="login-intro__message">
+
+                <strong>
+
+                    Tu reporte puede ayudar.
+
+                </strong>
+
+                <span>
+
+                    Informar una fuga es el primer paso
+                    para que pueda ser atendida.
+
+                </span>
+
             </div>
+
+
+        </div>
+
+
+        <!-- =========================================
+             FORMULARIO
+        ========================================== -->
+
+        <div class="login-card">
+
+
+            <div class="login-card__header">
+
+
+                <h2>
+
+                    Iniciar sesión
+
+                </h2>
+
+
+                <p>
+
+                    Ingresa tus datos para continuar.
+
+                </p>
+
+
+            </div>
+
 
             {% if error %}
-            <div class="login-error">
-                {{ error }}
-            </div>
+
+                <div class="login-alert">
+
+                    {{ error }}
+
+                </div>
+
             {% endif %}
 
-            <form method="POST" action="{% url 'login' %}" novalidate>
+
+            <form
+                method="POST"
+                class="login-form"
+            >
+
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Nombre de usuario</label>
-                    <input type="text" id="username" name="username" value="{{ username }}" placeholder="Usuario" required>
+
+
+                <!-- USUARIO -->
+
+                <div class="login-form__group">
+
+                    <label
+                        for="username"
+                    >
+
+                        Usuario
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value="{{ username }}"
+                        placeholder="Ingresa tu usuario"
+                        autocomplete="username"
+                        required
+                    >
+
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+
+                <!-- CONTRASEÑA -->
+
+                <div class="login-form__group">
+
+                    <label
+                        for="password"
+                    >
+
+                        Contraseña
+
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+
                 </div>
 
-                <button type="submit" class="btn-login">Acceder</button>
+
+                <!-- BOTÓN -->
+
+                <button
+                    type="submit"
+                    class="login-form__button"
+                >
+
+                    Iniciar sesión
+
+                </button>
+
+
             </form>
 
-            <div class="login-footer">
-                <p>¿No tienes cuenta? <a href="{% url 'registro' %}">Crear una cuenta</a></p>
-                <p><a href="{% url 'home' %}">Volver a inicio</a></p>
+
+            <!-- REGISTRO -->
+
+            <div class="login-card__footer">
+
+                <span>
+
+                    ¿Todavía no tienes una cuenta?
+
+                </span>
+
+
+                <a
+                    href="{% url 'registro' %}"
+                >
+
+                    Crear una cuenta
+
+                </a>
+
             </div>
+
+
         </div>
+
+
     </div>
-</body>
-</html>
+
+
+</section>
+
+
+{% endblock %}

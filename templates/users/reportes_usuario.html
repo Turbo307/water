@@ -1,140 +1,914 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes de Fugas de Agua</title>
-    <link rel="stylesheet" href="/static/css/users/reportes.css">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <h1>Sistema de Reportes de Fugas</h1>
-                <div class="user-info" id="userInfo">
-                    <span id="usernameTxt">Cargando...</span>
-                    <button class="btn-logout" id="btnLogout" type="button">Cerrar sesión</button>
-                </div>
+{% extends 'users/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+
+    Mis reportes | Water Report
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/users/reportes_usuario.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="reports-page">
+
+
+    <!-- =================================================
+         HEADER DE LA PÁGINA
+    ================================================== -->
+
+    <section class="reports-header">
+
+
+        <div class="reports-header__container">
+
+
+            <div class="reports-header__content">
+
+
+                <span class="reports-header__tag">
+
+                    WATER REPORT
+
+                </span>
+
+
+                <h1>
+
+                    Mis reportes
+
+                </h1>
+
+
+                <p>
+
+                    Hola,
+                    <strong>
+                        {{ usuario.username }}
+                    </strong>.
+
+                    Desde aquí puedes reportar una nueva fuga
+                    y consultar el estado de tus reportes.
+
+                </p>
+
+
             </div>
-        </header>
 
-        <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="crear-reporte">
-                Crear Reporte
+
+            <button
+                type="button"
+                class="reports-header__button"
+                id="btn-open-report"
+            >
+
+                Reportar una fuga
+
             </button>
-            <button class="tab-btn" data-tab="mis-reportes">
-                Mis Reportes
-            </button>
-            <button class="tab-btn" data-tab="todos-reportes">
-                Todos los Reportes
-            </button>
-        </nav>
 
-        <main class="main-content">
-            <section id="crear-reporte" class="tab-content active">
-                <div class="form-container">
-                    <h2>Reportar Fuga de Agua</h2>
-                    <form id="formReporte" class="form">
-                        <div class="form-group">
-                            <label for="tipoIncidente">Tipo de Incidente *</label>
-                            <select id="tipoIncidente" name="tipo_incidente" required>
-                                <option value="">Selecciona un tipo...</option>
-                                <option value="BANQUETA">Fuga en banqueta / vía pública</option>
-                                <option value="MEDIDOR">Fuga en el mededor</option>
-                                <option value="DRENAJE">Brote de aguas negras</option>
-                                <option value="OTRO">Otro tipo de reporte</option>
-                            </select>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="descripcion">Descripción del Problema *</label>
-                            <textarea id="descripcion" name="descripcion" rows="4" 
-                                    placeholder="Describe detalladamente la situación..." required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label> Ubicación (GPS)</label>
-                            <button type="button" class="btn-secondary" id="btnObtenerUbicacion">
-                                Obtener Mi Ubicación
-                            </button>
-                            <div id="ubicacionStatus" class="status-message"></div>
-                            
-                            <div class="coords-row">
-                                <div class="form-group-inline">
-                                    <label for="latitud">Latitud</label>
-                                    <input type="number" id="latitud" name="latitud" 
-                                        step="0.000001" placeholder="ej: 19.432608" readonly>
-                                </div>
-                                <div class="form-group-inline">
-                                    <label for="longitud">Longitud</label>
-                                    <input type="number" id="longitud" name="longitud" 
-                                        step="0.000001" placeholder="ej: -99.133209" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="direccionManual">Dirección o Referencia</label>
-                            <input type="text" id="direccionManual" name="direccion_manual" 
-                                placeholder="ej: Calle Principal 123, frente a la tienda">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="foto">Foto de la Fuga (opcional)</label>
-                            <input type="file" id="foto" name="foto" accept="image/*">
-                            <div id="previewContainer"></div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn-primary">Enviar Reporte</button>
-                            <button type="reset" class="btn-secondary">Limpiar Formulario</button>
-                        </div>
-
-                        <div id="statusMessage" class="status-message"></div>
-                    </form>
-                </div>
-            </section>
-
-            <section id="mis-reportes" class="tab-content">
-                <div class="reports-container">
-                    <h2>Mis Reportes</h2>
-                    <div class="filters">
-                        <button class="filter-btn active" data-filter="todos">Todos</button>
-                        <button class="filter-btn" data-filter="PENDIENTE">Pendientes</button>
-                        <button class="filter-btn" data-filter="PROGRESO">En Progreso</button>
-                        <button class="filter-btn" data-filter="RESUELTO">Resueltos</button>
-                    </div>
-                    <div id="misReportesContainer" class="reportes-grid">
-                        <p class="loading">Cargando reportes...</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="todos-reportes" class="tab-content">
-                <div class="reports-container">
-                    <h2>Todos los Reportes del Sistema</h2>
-                    <div class="filters">
-                        <button class="filter-btn active" data-filter="todos">Todos</button>
-                        <button class="filter-btn" data-filter="BANQUETA">Banqueta</button>
-                        <button class="filter-btn" data-filter="MEDIDOR">Medidor</button>
-                        <button class="filter-btn" data-filter="DRENAJE">Drenaje</button>
-                    </div>
-                    <div id="todosReportesContainer" class="reportes-grid">
-                        <p class="loading">Cargando reportes...</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <div id="modalDetalle" class="modal hidden">
-            <div class="modal-content">
-                <button class="modal-close" id="btnCerrarModal" type="button" aria-label="Cerrar modal">&times;</button>
-                <div id="detalleContent"></div>
-            </div>
         </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         ESTADÍSTICAS
+    ================================================== -->
+
+    <section class="reports-stats">
+
+
+        <div class="reports-stats__container">
+
+
+            <!-- TOTAL -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-card__icon">
+
+                    #
+
+                </div>
+
+
+                <div class="stat-card__content">
+
+
+                    <span>
+
+                        Total de reportes
+
+                    </span>
+
+
+                    <strong id="total-reports">
+
+                        {{ mis_reportes }}
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+            <!-- PENDIENTES -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-card__icon stat-card__icon--warning">
+
+                    !
+
+                </div>
+
+
+                <div class="stat-card__content">
+
+
+                    <span>
+
+                        Pendientes
+
+                    </span>
+
+
+                    <strong id="pending-reports">
+
+                        0
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+            <!-- EN PROGRESO -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-card__icon stat-card__icon--progress">
+
+                    →
+
+                </div>
+
+
+                <div class="stat-card__content">
+
+
+                    <span>
+
+                        En progreso
+
+                    </span>
+
+
+                    <strong id="progress-reports">
+
+                        0
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+            <!-- RESUELTOS -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-card__icon stat-card__icon--success">
+
+                    ✓
+
+                </div>
+
+
+                <div class="stat-card__content">
+
+
+                    <span>
+
+                        Resueltos
+
+                    </span>
+
+
+                    <strong id="resolved-reports">
+
+                        0
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         CONTENIDO PRINCIPAL
+    ================================================== -->
+
+    <section class="reports-content">
+
+
+        <div class="reports-content__container">
+
+
+            <!-- =================================================
+                 BARRA DE HERRAMIENTAS
+            ================================================== -->
+
+            <div class="reports-toolbar">
+
+
+                <div>
+
+
+                    <h2>
+
+                        Mis reportes enviados
+
+                    </h2>
+
+
+                    <p>
+
+                        Consulta el seguimiento de los reportes
+                        que has realizado.
+
+                    </p>
+
+
+                </div>
+
+
+                <div class="reports-toolbar__actions">
+
+
+                    <select
+                        id="report-status-filter"
+                        class="reports-filter"
+                    >
+
+                        <option value="TODOS">
+
+                            Todos los estados
+
+                        </option>
+
+
+                        <option value="PENDIENTE">
+
+                            Pendientes
+
+                        </option>
+
+
+                        <option value="PROGRESO">
+
+                            En progreso
+
+                        </option>
+
+
+                        <option value="RESUELTO">
+
+                            Resueltos
+
+                        </option>
+
+
+                    </select>
+
+
+                    <button
+                        type="button"
+                        id="btn-refresh-reports"
+                        class="reports-refresh"
+                    >
+
+                        Actualizar
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 MENSAJES
+            ================================================== -->
+
+            <div
+                id="reports-message"
+                class="reports-message"
+                hidden
+            >
+            </div>
+
+
+            <!-- =================================================
+                 ESTADO DE CARGA
+            ================================================== -->
+
+            <div
+                id="reports-loading"
+                class="reports-loading"
+                hidden
+            >
+
+                <div class="reports-loading__spinner">
+                </div>
+
+
+                <p>
+
+                    Cargando tus reportes...
+
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIN REPORTES
+            ================================================== -->
+
+            <div
+                id="reports-empty"
+                class="reports-empty"
+                hidden
+            >
+
+
+                <div class="reports-empty__icon">
+
+                    +
+
+                </div>
+
+
+                <h3>
+
+                    Todavía no tienes reportes
+
+                </h3>
+
+
+                <p>
+
+                    Cuando encuentres una fuga de agua,
+                    puedes reportarla desde aquí.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    id="btn-empty-report"
+                    class="reports-empty__button"
+                >
+
+                    Reportar una fuga
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LISTA DE REPORTES
+            ================================================== -->
+
+            <div
+                id="reports-list"
+                class="reports-list"
+            >
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — CREAR REPORTE
+====================================================== -->
+
+<div
+    id="report-modal"
+    class="report-modal"
+    hidden
+>
+
+
+    <div
+        class="report-modal__overlay"
+        id="report-modal-overlay"
+    >
     </div>
 
-    <script src="/static/js/users/api.js"></script>
-    <script src="/static/js/users/reportes.js"></script>
-</body>
-</html>
+
+    <div
+        class="report-modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="report-modal-title"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="report-modal__header">
+
+
+            <div>
+
+
+                <span class="report-modal__tag">
+
+                    NUEVO REPORTE
+
+                </span>
+
+
+                <h2 id="report-modal-title">
+
+                    Reportar una fuga
+
+                </h2>
+
+
+                <p>
+
+                    Proporciona la información de la fuga
+                    para que pueda ser revisada.
+
+                </p>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                class="report-modal__close"
+                id="btn-close-report"
+                aria-label="Cerrar"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form
+            id="report-form"
+            class="report-form"
+        >
+
+
+            <!-- TIPO DE INCIDENTE -->
+
+            <div class="report-form__group">
+
+
+                <label
+                    for="tipo_incidente"
+                >
+
+                    Tipo de incidente
+
+                </label>
+
+
+                <select
+                    id="tipo_incidente"
+                    name="tipo_incidente"
+                    required
+                >
+
+                    <option value="">
+
+                        Selecciona una opción
+
+                    </option>
+
+
+                    <option value="CALLE">
+
+                        Fuga en la calle
+
+                    </option>
+
+
+                    <option value="BANQUETA">
+
+                        Fuga en banqueta
+
+                    </option>
+
+
+                    <option value="DOMICILIO">
+
+                        Fuga en domicilio
+
+                    </option>
+
+
+                    <option value="TUBERIA">
+
+                        Tubería dañada
+
+                    </option>
+
+
+                    <option value="OTRO">
+
+                        Otro
+
+                    </option>
+
+
+                </select>
+
+
+            </div>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <div class="report-form__group">
+
+
+                <label
+                    for="descripcion"
+                >
+
+                    Descripción
+
+                </label>
+
+
+                <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    rows="4"
+                    placeholder="Describe dónde está la fuga y qué tan grande es..."
+                    required
+                ></textarea>
+
+
+            </div>
+
+
+            <!-- DIRECCIÓN -->
+
+            <div class="report-form__group">
+
+
+                <label
+                    for="direccion_manual"
+                >
+
+                    Dirección o referencia
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="direccion_manual"
+                    name="direccion_manual"
+                    placeholder="Ej. Calle principal frente al parque"
+                >
+
+
+            </div>
+
+
+            <!-- UBICACIÓN -->
+
+            <div class="report-location">
+
+
+                <div class="report-location__header">
+
+
+                    <div>
+
+
+                        <strong>
+
+                            Ubicación
+
+                        </strong>
+
+
+                        <span>
+
+                            Puedes usar tu ubicación actual.
+
+                        </span>
+
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btn-get-location"
+                        class="report-location__button"
+                    >
+
+                        Obtener ubicación
+
+                    </button>
+
+
+                </div>
+
+
+                <div
+                    id="location-status"
+                    class="report-location__status"
+                >
+
+                    Ubicación no obtenida
+
+                </div>
+
+
+            </div>
+
+
+            <!-- CAMPOS OCULTOS GPS -->
+
+            <input
+                type="hidden"
+                id="latitud"
+                name="latitud"
+            >
+
+
+            <input
+                type="hidden"
+                id="longitud"
+                name="longitud"
+            >
+
+
+            <!-- FOTO -->
+
+            <div class="report-form__group">
+
+
+                <label
+                    for="foto"
+                >
+
+                    Fotografía
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="foto"
+                    name="foto"
+                    accept="image/*"
+                >
+
+
+                <small>
+
+                    Agrega una fotografía si es posible.
+
+                </small>
+
+
+            </div>
+
+
+            <!-- PREVISUALIZACIÓN -->
+
+            <div
+                id="photo-preview"
+                class="photo-preview"
+                hidden
+            >
+
+                <img
+                    id="photo-preview-image"
+                    src=""
+                    alt="Vista previa de la fotografía"
+                >
+
+
+                <button
+                    type="button"
+                    id="btn-remove-photo"
+                    class="photo-preview__remove"
+                >
+
+                    Eliminar fotografía
+
+                </button>
+
+
+            </div>
+
+
+            <!-- MENSAJE DEL FORMULARIO -->
+
+            <div
+                id="report-form-message"
+                class="report-form-message"
+                hidden
+            >
+            </div>
+
+
+            <!-- ACCIONES -->
+
+            <div class="report-form__actions">
+
+
+                <button
+                    type="button"
+                    id="btn-cancel-report"
+                    class="report-form__cancel"
+                >
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="btn-submit-report"
+                    class="report-form__submit"
+                >
+
+                    Enviar reporte
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — DETALLE DEL REPORTE
+====================================================== -->
+
+<div
+    id="detail-modal"
+    class="report-modal"
+    hidden
+>
+
+
+    <div
+        class="report-modal__overlay"
+        id="detail-modal-overlay"
+    >
+    </div>
+
+
+    <div
+        class="report-modal__content report-detail"
+        role="dialog"
+        aria-modal="true"
+    >
+
+
+        <div class="report-modal__header">
+
+
+            <div>
+
+
+                <span class="report-modal__tag">
+
+                    DETALLE DEL REPORTE
+
+                </span>
+
+
+                <h2>
+
+                    Información del reporte
+
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="report-modal__close"
+                id="btn-close-detail"
+                aria-label="Cerrar"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="report-detail-content"
+            class="report-detail__content"
+        >
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+
+<script
+    src="{% static 'js/users/api.js' %}"
+></script>
+
+
+<script
+    src="{% static 'js/users/reportes_usuario.js' %}"
+></script>
+
+
+{% endblock %}

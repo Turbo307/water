@@ -1,46 +1,373 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Reportes de Fugas de Agua</title>
-    <link rel="stylesheet" href="/static/css/users/home.css">
-</head>
-<body>
-    <div class="container">
-        <h1> Water System</h1>
-        <p class="subtitle">Sistema de Reportes de Fugas de Agua</p>
+{% extends 'users/base.html' %}
 
-        {% if message %}
-        <div class="message">
-            {{ message }}
-        </div>
-        {% endif %}
+{% load static %}
 
-        <div class="features">
-            <h3>Características</h3>
-            <ul>
-                <li>Reportar fugas de agua</li>
-                <li>Geolocalización automática (GPS)</li>
-                <li>Subir fotos de incidentes</li>
-                <li>Seguimiento de reportes</li>
-                <li>API REST completa</li>
-            </ul>
+
+{% block title %}
+
+    Water Report | Inicio
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/users/home.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<section class="home-hero">
+
+    <div class="home-hero__container">
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+
+        <div class="home-hero__content">
+
+
+            <span class="home-hero__tag">
+
+                Sistema de reportes de fugas
+
+            </span>
+
+
+            <h1 class="home-hero__title">
+
+                Ayúdanos a cuidar
+                <span>el agua</span>
+
+            </h1>
+
+
+            <p class="home-hero__description">
+
+                Detectaste una fuga de agua?
+                Repórtala de manera rápida y sencilla.
+                Tu reporte ayudará a que el problema
+                pueda ser atendido.
+
+            </p>
+
+
+            <div class="home-hero__actions">
+
+
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'reportes_usuario' %}"
+                        class="home-button home-button--primary"
+                    >
+
+                        Reportar una fuga
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'reportes_usuario' %}"
+                        class="home-button home-button--secondary"
+                    >
+
+                        Ver mis reportes
+
+                    </a>
+
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="home-button home-button--primary"
+                    >
+
+                        Reportar una fuga
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'registro' %}"
+                        class="home-button home-button--secondary"
+                    >
+
+                        Crear una cuenta
+
+                    </a>
+
+                {% endif %}
+
+
+            </div>
+
+
         </div>
 
-        <div class="buttons">
-            {% if user.is_authenticated %}
-                <a href="/reportes-app/" class="btn btn-primary"> Mis Reportes</a>
-                <a href="/test-api/" class="btn btn-secondary"> API de Reportes de Agua</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn btn-primary"> Iniciar Sesión</a>
-                <a href="{% url 'registro' %}" class="btn btn-secondary"> Crear Cuenta</a>
-            {% endif %}
+
+        <!-- ELEMENTO VISUAL -->
+
+        <div class="home-hero__visual">
+
+
+            <div class="home-water-card">
+
+
+                <div class="home-water-card__icon">
+
+                    W
+
+                </div>
+
+
+                <div class="home-water-card__content">
+
+                    <span>
+
+                        Water Report
+
+                    </span>
+
+                    <strong>
+
+                        Reporta. Informa. Ayuda.
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="home-water-drop home-water-drop--one">
+            </div>
+
+            <div class="home-water-drop home-water-drop--two">
+            </div>
+
+            <div class="home-water-drop home-water-drop--three">
+            </div>
+
+
         </div>
 
-        <div class="footer">
-            <p>Sistema de reportes para gestión de fugas de agua</p>
-        </div>
+
     </div>
-</body>
-</html>
+
+</section>
+
+
+<!-- =====================================================
+     COMO FUNCIONA
+====================================================== -->
+
+<section class="home-process">
+
+
+    <div class="home-section-header">
+
+
+        <span class="home-section-header__tag">
+
+            Sencillo y rápido
+
+        </span>
+
+
+        <h2>
+
+            ¿Cómo funciona?
+
+        </h2>
+
+
+        <p>
+
+            Reportar una fuga solo requiere unos cuantos pasos.
+
+        </p>
+
+
+    </div>
+
+
+    <div class="home-process__grid">
+
+
+        <!-- PASO 1 -->
+
+        <article class="home-process-card">
+
+
+            <div class="home-process-card__number">
+
+                01
+
+            </div>
+
+
+            <h3>
+
+                Crea tu cuenta
+
+            </h3>
+
+
+            <p>
+
+                Regístrate en el sistema para poder
+                enviar y consultar tus reportes.
+
+            </p>
+
+
+        </article>
+
+
+        <!-- PASO 2 -->
+
+        <article class="home-process-card">
+
+
+            <div class="home-process-card__number">
+
+                02
+
+            </div>
+
+
+            <h3>
+
+                Reporta la fuga
+
+            </h3>
+
+
+            <p>
+
+                Describe el problema, agrega una
+                fotografía y proporciona la ubicación.
+
+            </p>
+
+
+        </article>
+
+
+        <!-- PASO 3 -->
+
+        <article class="home-process-card">
+
+
+            <div class="home-process-card__number">
+
+                03
+
+            </div>
+
+
+            <h3>
+
+                Consulta el estado
+
+            </h3>
+
+
+            <p>
+
+                Revisa tus reportes y conoce si están
+                pendientes, en progreso o resueltos.
+
+            </p>
+
+
+        </article>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     INFORMACION
+====================================================== -->
+
+<section class="home-info">
+
+
+    <div class="home-info__container">
+
+
+        <div class="home-info__content">
+
+
+            <span class="home-info__tag">
+
+                Tu reporte importa
+
+            </span>
+
+
+            <h2>
+
+                Una pequeña acción
+                puede hacer la diferencia.
+
+            </h2>
+
+
+            <p>
+
+                Las fugas de agua pueden desperdiciar
+                grandes cantidades de este recurso.
+                Al informar sobre una fuga, contribuyes
+                a que pueda ser identificada y atendida.
+
+            </p>
+
+
+        </div>
+
+
+        <div class="home-info__highlight">
+
+
+            <strong>
+
+                Reporta una fuga.
+
+            </strong>
+
+
+            <span>
+
+                Ayuda a cuidar el agua.
+
+            </span>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}
