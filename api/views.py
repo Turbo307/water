@@ -600,3 +600,20 @@ def logout_view(request):
     return redirect(
         '/'
     )
+
+
+# =========================================
+# LOGOUT ADMINISTRADOR
+# =========================================
+
+def admin_logout_view(request):
+
+    """Cierra la sesión del administrador"""
+
+    auth_logout(
+        request
+    )
+
+    return redirect(
+        'admin_login'
+    )

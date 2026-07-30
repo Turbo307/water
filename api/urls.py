@@ -48,6 +48,12 @@ urlpatterns = [
         name="admin_login"
     ),
 
+    path(
+    "admin-logout/",
+    views.admin_logout_view,
+    name="admin_logout"
+),
+
 
     # =========================================
     # VISTAS DEL ADMINISTRADOR
