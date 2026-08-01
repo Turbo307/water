@@ -28,6 +28,15 @@ ALLOWED_HOSTS = [
     "*", 
 ]
 
+# Orígenes permitidos para hacer peticiones HTTP/Fetch desde el Frontend
+#CORS_ALLOWED_ORIGINS = [
+ #   "http://localhost",
+  #  "http://localhost:8080",      # XAMPP
+   # "http://127.0.0.1:8080",
+    #"http://localhost:5500",      #Live Server en VS Code
+    #"http://127.0.0.1:5500",
+#]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'rest_framework_simplejwt',
     'rest_framework',
     'rest_framework.authtoken', 
     'corsheaders',
@@ -46,9 +56,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Debe ir antes de CommonMiddleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

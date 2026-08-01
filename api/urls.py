@@ -58,7 +58,7 @@ urlpatterns = [
     
     # VISTAS DEL ADMINISTRADOR
     
-
+    
     path(
         "dashboard/",
         views.dashboard,
