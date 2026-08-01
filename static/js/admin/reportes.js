@@ -1,7 +1,6 @@
 /*
-=========================================================
+
     WATER ADMIN - REPORTES
-=========================================================
 */
 
 
@@ -16,9 +15,9 @@ document.addEventListener(
 
 
 /*
-=========================================================
+
     CARGAR REPORTES
-=========================================================
+
 */
 
 async function cargarReportes() {
@@ -26,9 +25,9 @@ async function cargarReportes() {
     try {
 
         /*
-        =================================================
+        
             OBTENER TOKEN JWT
-        =================================================
+        
         */
 
         const token =
@@ -38,9 +37,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             SOLICITAR REPORTES A LA API
-        =================================================
+        
         */
 
         const respuesta =
@@ -64,25 +63,43 @@ async function cargarReportes() {
             );
 
 
-        /*
-        =================================================
-            VERIFICAR RESPUESTA
-        =================================================
-        */
+        
 
-        if (!respuesta.ok) {
+        // Verificar si la sesion expiro
+
+        if (
+            respuesta.status === 401
+        ){
+
+            localStorage.removeItem(
+                "access_token"
+            );
+
+            localStorage.removeItem(
+                "refresh_token"
+            );
+
+            window.location.href = 
+                "/admin-login";
+
+            return;
+        }
+
+        //verificar respuesta 
+        if(
+            !respuesta.ok
+        ){
 
             throw new Error(
                 `Error HTTP: ${respuesta.status}`
             );
-
         }
 
 
         /*
-        =================================================
+        
             CONVERTIR RESPUESTA A JSON
-        =================================================
+        
         */
 
         const datos =
@@ -90,9 +107,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             OBTENER REPORTES
-        =================================================
+        
         */
 
         const reportes =
@@ -100,9 +117,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             OBTENER TABLA
-        =================================================
+        
         */
 
         const tbody =
@@ -112,18 +129,18 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             LIMPIAR TABLA
-        =================================================
+        
         */
 
         tbody.innerHTML = "";
 
 
         /*
-        =================================================
+        
             VERIFICAR SI EXISTEN REPORTES
-        =================================================
+        
         */
 
         if (
@@ -153,9 +170,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             GENERAR FILAS
-        =================================================
+        
         */
 
         reportes.forEach(
@@ -168,9 +185,9 @@ async function cargarReportes() {
 
 
                 /*
-                =========================================
+                
                     CREAR CONTENIDO DE LA FILA
-                =========================================
+                
                 */
 
                 fila.innerHTML = `
@@ -241,9 +258,9 @@ async function cargarReportes() {
 
 
                 /*
-                =========================================
+                
                     AGREGAR FILA A LA TABLA
-                =========================================
+                
                 */
 
                 tbody.appendChild(
@@ -258,9 +275,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             MOSTRAR ERROR EN CONSOLA
-        =================================================
+        
         */
 
         console.error(
@@ -270,9 +287,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             OBTENER TABLA
-        =================================================
+        
         */
 
         const tbody =
@@ -282,9 +299,9 @@ async function cargarReportes() {
 
 
         /*
-        =================================================
+        
             MOSTRAR MENSAJE DE ERROR
-        =================================================
+        
         */
 
         tbody.innerHTML = `

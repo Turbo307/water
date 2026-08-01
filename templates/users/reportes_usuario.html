@@ -26,9 +26,7 @@
 <div class="reports-page">
 
 
-    <!-- =================================================
-         HEADER DE LA PÁGINA
-    ================================================== -->
+    <!--  HEADER DE LA PÁGINA -->
 
     <section class="reports-header">
 
@@ -54,13 +52,12 @@
 
 
                 <p>
-
-                    Hola,
-                    <strong>
-                        {{ usuario.username }}
+                    Hola
+                    <strong id="nombre-usuario">
+                        Cargando...
                     </strong>.
 
-                    Desde aquí puedes reportar una nueva fuga
+                    Desde aqui puedes reportar una nueva guga
                     y consultar el estado de tus reportes.
 
                 </p>
@@ -86,9 +83,7 @@
     </section>
 
 
-    <!-- =================================================
-         ESTADÍSTICAS
-    ================================================== -->
+    <!-- ESTADÍSTICAS -->
 
     <section class="reports-stats">
 
@@ -242,9 +237,7 @@
     </section>
 
 
-    <!-- =================================================
-         CONTENIDO PRINCIPAL
-    ================================================== -->
+    <!--  CONTENIDO PRINCIPAL -->
 
     <section class="reports-content">
 
@@ -252,9 +245,7 @@
         <div class="reports-content__container">
 
 
-            <!-- =================================================
-                 BARRA DE HERRAMIENTAS
-            ================================================== -->
+            <!-- BARRA DE HERRAMIENTAS-->
 
             <div class="reports-toolbar">
 
@@ -348,9 +339,7 @@
             </div>
 
 
-            <!-- =================================================
-                 ESTADO DE CARGA
-            ================================================== -->
+            <!-- ESTADO DE CARGA-->
 
             <div
                 id="reports-loading"
@@ -371,9 +360,7 @@
             </div>
 
 
-            <!-- =================================================
-                 SIN REPORTES
-            ================================================== -->
+            <!-- SIN REPORTES -->
 
             <div
                 id="reports-empty"
@@ -418,9 +405,7 @@
             </div>
 
 
-            <!-- =================================================
-                 LISTA DE REPORTES
-            ================================================== -->
+            <!-- = LISTA DE REPORTES -->
 
             <div
                 id="reports-list"
@@ -438,9 +423,7 @@
 </div>
 
 
-<!-- =====================================================
-     MODAL — CREAR REPORTE
-====================================================== -->
+<!-- CREAR REPORTE-->
 
 <div
     id="report-modal"
@@ -534,55 +517,19 @@
                 </label>
 
 
-                <select
-                    id="tipo_incidente"
-                    name="tipo_incidente"
-                    required
-                >
+                <select id="tipo_incidente" name="tipo_incidente" required>
 
-                    <option value="">
+    <option value=""> Selecciona una opción </option>
 
-                        Selecciona una opción
+    <option value="BANQUETA"> Fuga en banqueta / vía pública </option>
 
-                    </option>
+    <option value="MEDIDOR"> Fuga en el medidor </option>
 
+    <option value="DRENAJE"> Brote de aguas negras </option>
 
-                    <option value="CALLE">
+    <option value="OTRO"> Otro tipo de reporte </option>
 
-                        Fuga en la calle
-
-                    </option>
-
-
-                    <option value="BANQUETA">
-
-                        Fuga en banqueta
-
-                    </option>
-
-
-                    <option value="DOMICILIO">
-
-                        Fuga en domicilio
-
-                    </option>
-
-
-                    <option value="TUBERIA">
-
-                        Tubería dañada
-
-                    </option>
-
-
-                    <option value="OTRO">
-
-                        Otro
-
-                    </option>
-
-
-                </select>
+</select>
 
 
             </div>
@@ -820,9 +767,7 @@
 </div>
 
 
-<!-- =====================================================
-     MODAL — DETALLE DEL REPORTE
-====================================================== -->
+<!-- DETALLE DEL REPORTE -->
 
 <div
     id="detail-modal"

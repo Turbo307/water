@@ -1,184 +1,226 @@
 {% load static %}
 
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <meta
-        name="description"
-        content="Sistema de reportes de fugas de agua"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        {% block title %}
-            Water Report
-        {% endblock %}
-    </title>
+<meta
+    name="description"
+    content="Sistema de reportes de fugas de agua"
+>
 
+<title>
 
-    <!-- =========================================
-         CSS GLOBAL USERS
-    ========================================== -->
+    {% block title %}
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/users/base.css' %}"
-    >
+        Water
 
-
-    <!-- =========================================
-         CSS ESPECÍFICO DE LA PÁGINA
-    ========================================== -->
-
-    {% block extra_css %}
     {% endblock %}
 
-</head>
+</title>
 
+
+<!-- CSS GLOBAL USERS -->
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/users/base.css' %}"
+>
+
+
+<!-- CSS ESPECÍFICO DE LA PÁGINA -->
+
+{% block extra_css %}
+{% endblock %}
+
+
+</head>
 
 <body>
 
 
-    <!-- =========================================
-         HEADER / NAVBAR
-    ========================================== -->
+<!-- HEADER / NAVBAR -->
 
-    <header class="user-header">
+<header class="user-header">
 
-        <div class="user-header__container">
+    <div class="user-header__container">
 
 
-            <!-- LOGO -->
+        <!-- LOGO -->
+
+        <a
+            href="{% url 'home' %}"
+            class="user-logo"
+        >
+
+            <span class="user-logo__icon">
+
+                W
+
+            </span>
+
+
+            <span class="user-logo__text">
+
+                Waterss
+
+            </span>
+
+        </a>
+
+
+        <!-- NAVEGACIÓN -->
+
+        <nav class="user-nav">
+
+
+            <!-- INICIO -->
 
             <a
                 href="{% url 'home' %}"
-                class="user-logo"
+                class="user-nav__link"
             >
 
-                <span class="user-logo__icon">
-                    W
-                </span>
-
-                <span class="user-logo__text">
-                    Water Report
-                </span>
+                Inicio
 
             </a>
 
 
-            <!-- NAVEGACIÓN -->
+            <!-- USUARIO AUTENTICADO -->
 
-            <nav class="user-nav">
+            <div
+                id="navbar-authenticated"
+                hidden
+            >
 
 
                 <a
-                    href="{% url 'home' %}"
+                    href="{% url 'reportes_usuario' %}"
                     class="user-nav__link"
                 >
-                    Inicio
+
+                    Mis reportes
+
                 </a>
 
 
-                {% if user.is_authenticated %}
+                <span
+                    class="user-nav__user"
+                    id="navbar-username"
+                >
 
-                    <a
-                        href="{% url 'reportes_usuario' %}"
-                        class="user-nav__link"
-                    >
-                        Mis reportes
-                    </a>
+                </span>
 
 
-                    <span class="user-nav__user">
+                <button
+                    type="button"
+                    class="user-nav__logout"
+                    id="navbar-logout"
+                >
 
-                        {{ user.username }}
+                    Cerrar sesión
 
-                    </span>
-
-
-                    <a
-                        href="{% url 'logout' %}"
-                        class="user-nav__logout"
-                    >
-                        Cerrar sesión
-                    </a>
+                </button>
 
 
-                {% else %}
-
-                    <a
-                        href="{% url 'login' %}"
-                        class="user-nav__link"
-                    >
-                        Iniciar sesión
-                    </a>
+            </div>
 
 
-                    <a
-                        href="{% url 'registro' %}"
-                        class="user-nav__button"
-                    >
-                        Crear cuenta
-                    </a>
+            <!-- USUARIO NO AUTENTICADO -->
 
-                {% endif %}
+            <div
+                id="navbar-guest"
+            >
 
 
-            </nav>
+                <a
+                    href="{% url 'login' %}"
+                    class="user-nav__link"
+                >
+
+                    Iniciar sesión
+
+                </a>
 
 
-        </div>
+                <a
+                    href="{% url 'registro' %}"
+                    class="user-nav__button"
+                >
 
-    </header>
+                    Crear cuenta
 
-
-    <!-- =========================================
-         CONTENIDO PRINCIPAL
-    ========================================== -->
-
-    <main class="user-main">
-
-        {% block content %}
-        {% endblock %}
-
-    </main>
+                </a>
 
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
-
-    <footer class="user-footer">
-
-        <div class="user-footer__container">
-
-            <p>
-                Water Report
-            </p>
-
-            <p>
-                Sistema de reportes de fugas de agua
-            </p>
-
-        </div>
-
-    </footer>
+            </div>
 
 
-    <!-- =========================================
-         JAVASCRIPT ESPECÍFICO
-    ========================================== -->
+        </nav>
 
-    {% block extra_js %}
+
+    </div>
+
+</header>
+
+
+<!-- CONTENIDO PRINCIPAL -->
+
+<main class="user-main">
+
+    {% block content %}
     {% endblock %}
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="user-footer">
+
+    <div class="user-footer__container">
+
+
+        <p>
+
+            Water Report
+
+        </p>
+
+
+        <p>
+
+            Sistema de reportes de fugas de agua
+
+        </p>
+
+
+    </div>
+
+</footer>
+
+
+<!-- JAVASCRIPT GLOBAL -->
+
+<script
+    src="{% static 'js/users/navbar.js' %}"
+></script>
+
+
+<!-- JAVASCRIPT ESPECÍFICO DE LA PÁGINA -->
+
+{% block extra_js %}
+{% endblock %}
 
 
 </body>

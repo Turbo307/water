@@ -29,9 +29,7 @@
     <div class="login-container">
 
 
-        <!-- =========================================
-             INFORMACIÓN
-        ========================================== -->
+        <!-- Información de bienvenida -->
 
         <div class="login-intro">
 
@@ -80,9 +78,7 @@
         </div>
 
 
-        <!-- =========================================
-             FORMULARIO
-        ========================================== -->
+        <!-- Tarjeta de inicio de sesión -->
 
         <div class="login-card">
 
@@ -107,28 +103,28 @@
             </div>
 
 
-            {% if error %}
+            <!-- Mensaje para mostrar errores o información -->
 
-                <div class="login-alert">
+            <div
+                id="login-message"
+                class="login-alert"
+                hidden
+            >
+            </div>
 
-                    {{ error }}
 
-                </div>
-
-            {% endif %}
-
+            <!-- Formulario de inicio de sesión -->
 
             <form
-                method="POST"
+                id="login-form"
                 class="login-form"
             >
 
-                {% csrf_token %}
 
-
-                <!-- USUARIO -->
+                <!-- Campo de usuario -->
 
                 <div class="login-form__group">
+
 
                     <label
                         for="username"
@@ -143,18 +139,19 @@
                         type="text"
                         id="username"
                         name="username"
-                        value="{{ username }}"
                         placeholder="Ingresa tu usuario"
                         autocomplete="username"
                         required
                     >
 
+
                 </div>
 
 
-                <!-- CONTRASEÑA -->
+                <!-- Campo de contraseña -->
 
                 <div class="login-form__group">
+
 
                     <label
                         for="password"
@@ -174,13 +171,15 @@
                         required
                     >
 
+
                 </div>
 
 
-                <!-- BOTÓN -->
+                <!-- Botón para iniciar sesión -->
 
                 <button
                     type="submit"
+                    id="login-button"
                     class="login-form__button"
                 >
 
@@ -192,9 +191,10 @@
             </form>
 
 
-            <!-- REGISTRO -->
+            <!-- Enlace para crear una cuenta -->
 
             <div class="login-card__footer">
+
 
                 <span>
 
@@ -211,6 +211,7 @@
 
                 </a>
 
+
             </div>
 
 
@@ -221,6 +222,19 @@
 
 
 </section>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+
+<!-- JavaScript encargado de comunicarse con la API -->
+
+<script
+    src="{% static 'js/users/auth.js' %}"
+></script>
 
 
 {% endblock %}

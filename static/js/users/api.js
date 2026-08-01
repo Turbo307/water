@@ -1,7 +1,7 @@
 /*
-=========================================================
+
     WATER REPORT — USERS API
-=========================================================
+
 
     Este archivo contiene únicamente las funciones
     encargadas de comunicarse con la API de Django.
@@ -16,13 +16,13 @@
     - Mensajes de interfaz
     - Eventos
 
-=========================================================
+
 */
 
 
-/* =========================================================
+/* 
    CONFIGURACIÓN DE LA API
-========================================================= */
+ */
 
 const API_BASE_URL = '/api';
 
@@ -30,12 +30,56 @@ const API_REPORTES_URL =
     `${API_BASE_URL}/reportes-fuga/`;
 
 const API_USUARIO_URL =
-    `${API_BASE_URL}/usuario-actual/`;
+    '/user-auth/';
 
 
-/* =========================================================
+    /*
+   AUTENTICACIÓN JWT
+*/
+
+/**
+ * Obtiene el Access Token guardado
+ * después de iniciar sesión.
+ */
+
+function obtenerTokenJWT() {
+
+    return localStorage.getItem(
+        'access_token'
+    );
+
+}
+
+
+/**
+ * Crea los headers necesarios
+ * para comunicarse con la API.
+ */
+
+function obtenerHeadersAutenticados() {
+
+    const token =
+        obtenerTokenJWT();
+
+
+    return {
+
+        'Accept':
+            'application/json',
+
+        'Authorization':
+            `Bearer ${token}`
+
+    };
+
+}
+
+
+
+
+/* 
    CSRF
-========================================================= */
+ */
 
 /**
  * Obtiene el token CSRF desde las cookies.
@@ -108,9 +152,9 @@ function obtenerCSRFToken() {
 }
 
 
-/* =========================================================
+/* 
    MANEJO DE RESPUESTAS
-========================================================= */
+ */
 
 /**
  * Convierte una respuesta HTTP en JSON.
@@ -187,9 +231,9 @@ async function procesarRespuesta(
 }
 
 
-/* =========================================================
+/* 
    USUARIO
-========================================================= */
+ */
 
 /**
  * Obtiene la información del usuario
@@ -203,10 +247,9 @@ async function obtenerUsuarioActual() {
             API_USUARIO_URL,
             {
                 method: 'GET',
-                headers: {
-                    'Accept':
-                        'application/json'
-                }
+                headers: 
+                    obtenerHeadersAutenticados()
+                
             }
         );
 
@@ -218,9 +261,9 @@ async function obtenerUsuarioActual() {
 }
 
 
-/* =========================================================
+/* 
    REPORTES — OBTENER MIS REPORTES
-========================================================= */
+ */
 
 /**
  * Obtiene únicamente los reportes
@@ -235,13 +278,11 @@ async function obtenerMisReportes() {
 
     const response =
         await fetch(
-            `${API_REPORTES_URL}?owner=me`,
+            API_REPORTES_URL,
             {
                 method: 'GET',
-                headers: {
-                    'Accept':
-                        'application/json'
-                }
+                headers:
+                     obtenerHeadersAutenticados()
             }
         );
 
@@ -253,9 +294,9 @@ async function obtenerMisReportes() {
 }
 
 
-/* =========================================================
+/* 
    REPORTES — OBTENER REPORTE
-========================================================= */
+ */
 
 /**
  * Obtiene un reporte específico.
@@ -296,10 +337,9 @@ async function obtenerReporte(
 }
 
 
-/* =========================================================
+/* 
    REPORTES — CREAR
-========================================================= */
-
+ */
 /**
  * Crea un nuevo reporte.
  *
@@ -329,9 +369,9 @@ async function crearReporte(
     let body;
 
 
-    /* =====================================================
+    /* 
        REPORTE CON FOTO
-    ===================================================== */
+     */
 
     if (foto) {
 
@@ -373,9 +413,9 @@ async function crearReporte(
     }
 
 
-    /* =====================================================
+    /* 
        REPORTE SIN FOTO
-    ===================================================== */
+     */
 
     else {
 
@@ -413,9 +453,9 @@ async function crearReporte(
 }
 
 
-/* =========================================================
+/* 
    REPORTES — ACTUALIZAR
-========================================================= */
+ */
 
 /**
  * Actualiza parcialmente un reporte.
@@ -527,9 +567,9 @@ async function actualizarReporte(
 }
 
 
-/* =========================================================
+/* 
    REPORTES — ELIMINAR
-========================================================= */
+ */
 
 /**
  * Elimina un reporte.
@@ -586,9 +626,9 @@ async function eliminarReporte(
 }
 
 
-/* =========================================================
+/* 
    CERRAR SESIÓN
-========================================================= */
+ */
 
 /**
  * Cierra la sesión del usuario.

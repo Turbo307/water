@@ -1,14 +1,14 @@
 /*
-=========================================================
+
     WATER - LOGIN
-=========================================================
+
 */
 
 
 /*
-=========================================================
+
     ELEMENTOS DEL DOM
-=========================================================
+
 */
 
 const formulario =
@@ -54,9 +54,9 @@ const mensaje =
 
 
 /*
-=========================================================
+
     MOSTRAR / OCULTAR CONTRASEÑA
-=========================================================
+
 */
 
 passwordToggle.addEventListener(
@@ -65,9 +65,9 @@ passwordToggle.addEventListener(
 
 
         /*
-        =================================================
+        
             VERIFICAR TIPO ACTUAL DEL INPUT
-        =================================================
+        
         */
 
         const isPassword =
@@ -75,9 +75,9 @@ passwordToggle.addEventListener(
 
 
         /*
-        =================================================
+        
             MOSTRAR CONTRASEÑA
-        =================================================
+        
         */
 
         if (isPassword) {
@@ -107,9 +107,9 @@ passwordToggle.addEventListener(
 
 
         /*
-        =================================================
+        
             OCULTAR CONTRASEÑA
-        =================================================
+        
         */
 
         else {
@@ -143,9 +143,9 @@ passwordToggle.addEventListener(
 
 
 /*
-=========================================================
+
     LOGIN
-=========================================================
+
 */
 
 formulario.addEventListener(
@@ -154,18 +154,16 @@ formulario.addEventListener(
 
 
         /*
-        =================================================
+        
             EVITAR RECARGAR LA PÁGINA
-        =================================================
+        
         */
 
         event.preventDefault();
 
 
         /*
-        =================================================
             OBTENER USUARIO
-        =================================================
         */
 
         const username =
@@ -177,9 +175,8 @@ formulario.addEventListener(
 
 
         /*
-        =================================================
+        
             OBTENER CONTRASEÑA
-        =================================================
         */
 
         const password =
@@ -191,9 +188,7 @@ formulario.addEventListener(
 
 
         /*
-        =================================================
             DESHABILITAR BOTÓN
-        =================================================
         */
 
         botonLogin.disabled =
@@ -205,9 +200,7 @@ formulario.addEventListener(
 
 
         /*
-        =================================================
             LIMPIAR MENSAJE ANTERIOR
-        =================================================
         */
 
         mensaje.textContent =
@@ -218,9 +211,7 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
                 ENVIAR CREDENCIALES A LA API
-            =================================================
             */
 
             const respuesta =
@@ -253,9 +244,7 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
                 OBTENER RESPUESTA JSON
-            =================================================
             */
 
             const datos =
@@ -263,9 +252,7 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
                 VALIDAR AUTENTICACIÓN
-            =================================================
             */
 
             if (
@@ -296,9 +283,8 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
                 GUARDAR ACCESS TOKEN
-            =================================================
+            
             */
 
             localStorage.setItem(
@@ -308,9 +294,9 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
+            
                 GUARDAR REFRESH TOKEN
-            =================================================
+        
             */
 
             localStorage.setItem(
@@ -320,9 +306,8 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
                 MOSTRAR MENSAJE DE ÉXITO
-            =================================================
+            
             */
 
             mensaje.textContent =
@@ -334,9 +319,8 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
+            
                 REDIRIGIR AL DASHBOARD
-            =================================================
             */
 
             window.location.href =
@@ -350,9 +334,9 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
+            
                 MOSTRAR ERROR EN CONSOLA
-            =================================================
+            
             */
 
             console.error(
@@ -362,9 +346,9 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
+            
                 MOSTRAR ERROR AL USUARIO
-            =================================================
+            
             */
 
             mensaje.textContent =
@@ -376,9 +360,9 @@ formulario.addEventListener(
 
 
             /*
-            =================================================
+            
                 REACTIVAR BOTÓN
-            =================================================
+            
             */
 
             botonLogin.disabled =

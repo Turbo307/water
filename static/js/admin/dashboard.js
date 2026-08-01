@@ -1,7 +1,7 @@
 /*
-=========================================================
+
     WATER ADMIN - DASHBOARD
-=========================================================
+
 */
 
 
@@ -16,45 +16,93 @@ document.addEventListener(
 
 
 /*
-=========================================================
+
     CARGAR INFORMACIÓN DEL DASHBOARD
-=========================================================
+
 */
 
 async function cargarDashboard() {
 
     try {
 
-        const respuesta = await fetch(
-            "/api/reportes-fuga/"
-        );
+        /*
+    OBTENER TOKEN JWT
+*/
+
+const token =
+    localStorage.getItem(
+        "access_token"
+    );
 
 
-        if (!respuesta.ok) {
+/*
+    SOLICITAR REPORTES A LA API
+*/
 
-            throw new Error(
-                "Error al obtener los reportes"
-            );
+const respuesta =
+    await fetch(
+        "/api/reportes-fuga/",
+        {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization":
+                    `Bearer ${token}`,
+
+                "Content-Type":
+                    "application/json"
+
+            }
 
         }
+    );
+
+        // verificar si la sesion expiro
+
+        if (
+            respuesta.status === 401
+        ){
+            localStorage.removeItem(
+                "access_token"
+            );
+
+            localStorage.removeItem(
+                "refresh_token"
+            )
+
+            window.location.href = 
+            "/admin-login/";
+
+            return;
+        }
+
+        //Verificar la respuesta
+        if (!respuesta.ok){
+
+            throw new Error(
+                "error al obtener los reportes"
+            )
+        }
+
 
 
         const datos = await respuesta.json();
 
 
         /*
-        =================================================
             OBTENER LISTA DE REPORTES
-        =================================================
+        
         */
 
         const reportes = datos.results || [];
 
 
         /*
-        =================================================
+        
             ACTUALIZAR ESTADÍSTICAS
-        =================================================
+        
         */
 
         actualizarEstadisticas(
@@ -63,9 +111,9 @@ async function cargarDashboard() {
 
 
         /*
-        =================================================
+        
             MOSTRAR REPORTES RECIENTES
-        =================================================
+        
         */
 
         mostrarReportesRecientes(
@@ -86,9 +134,9 @@ async function cargarDashboard() {
 
 
 /*
-=========================================================
+
     ACTUALIZAR ESTADÍSTICAS
-=========================================================
+
 */
 
 function actualizarEstadisticas(
@@ -97,9 +145,9 @@ function actualizarEstadisticas(
 
 
     /*
-    =====================================================
+    
         TOTAL DE REPORTES
-    =====================================================
+    
     */
 
     const totalReportes =
@@ -107,9 +155,9 @@ function actualizarEstadisticas(
 
 
     /*
-    =====================================================
+    
         REPORTES PENDIENTES
-    =====================================================
+    
     */
 
     const reportesPendientes =
@@ -120,9 +168,9 @@ function actualizarEstadisticas(
 
 
     /*
-    =====================================================
+    
         REPORTES EN PROCESO
-    =====================================================
+    
     */
 
     const reportesProceso =
@@ -133,9 +181,8 @@ function actualizarEstadisticas(
 
 
     /*
-    =====================================================
+    
         REPORTES RESUELTOS
-    =====================================================
     */
 
     const reportesResueltos =
@@ -146,9 +193,9 @@ function actualizarEstadisticas(
 
 
     /*
-    =====================================================
+    
         ACTUALIZAR HTML
-    =====================================================
+    
     */
 
     document.getElementById(
@@ -178,9 +225,7 @@ function actualizarEstadisticas(
 
 
 /*
-=========================================================
     MOSTRAR REPORTES RECIENTES
-=========================================================
 */
 
 function mostrarReportesRecientes(
@@ -195,9 +240,7 @@ function mostrarReportesRecientes(
 
 
     /*
-    =====================================================
         VERIFICAR SI EXISTEN REPORTES
-    =====================================================
     */
 
     if (
@@ -226,9 +269,7 @@ function mostrarReportesRecientes(
 
 
     /*
-    =====================================================
         ORDENAR REPORTES POR FECHA
-    =====================================================
     */
 
     const reportesOrdenados =
@@ -249,9 +290,7 @@ function mostrarReportesRecientes(
 
 
     /*
-    =====================================================
         TOMAR LOS ÚLTIMOS 5
-    =====================================================
     */
 
     const reportesRecientes =
@@ -262,9 +301,7 @@ function mostrarReportesRecientes(
 
 
     /*
-    =====================================================
         GENERAR FILAS
-    =====================================================
     */
 
     contenedor.innerHTML =
@@ -282,9 +319,7 @@ function mostrarReportesRecientes(
 
 
             /*
-            =============================================
                 FORMATEAR FECHA
-            =============================================
             */
 
             const fecha =
@@ -309,9 +344,7 @@ function mostrarReportesRecientes(
 
 
             /*
-            =============================================
                 CREAR FILA
-            =============================================
             */
 
             fila.innerHTML = `

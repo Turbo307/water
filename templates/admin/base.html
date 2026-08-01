@@ -28,7 +28,7 @@
 
 </head>
 
-<body>
+<body class="admin-loading">
 
     <!-- BARRA SUPERIOR -->
 
@@ -89,7 +89,7 @@
                     href="{% url 'dashboard' %}"
                     class="nav-link"
                 >
-                    Dashboard
+                    Inicio
                 </a>
 
 
@@ -132,6 +132,10 @@
 
 
     <!-- JAVASCRIPT -->
+
+    <script
+    src="{% static 'js/admin/auth.js' %}"
+    ></script>
 
     {% block scripts %}
     {% endblock %}

@@ -1,8 +1,8 @@
 /*
-=========================================================
+
     WATER REPORT — USERS
     INTERFAZ DE REPORTES
-=========================================================
+
 
     Este archivo controla únicamente la interfaz
     de usuario.
@@ -24,13 +24,13 @@
     - Mostrar mensajes
     - Manejar eventos
 
-=========================================================
+
 */
 
 
-/* =========================================================
+/* 
    ESTADO DE LA APLICACIÓN
-========================================================= */
+ */
 
 const estadoReportes = {
 
@@ -43,9 +43,9 @@ const estadoReportes = {
 };
 
 
-/* =========================================================
+/* 
    ELEMENTOS DEL DOM
-========================================================= */
+ */
 
 const elementos = {};
 
@@ -57,9 +57,9 @@ const elementos = {};
 
 function inicializarElementos() {
 
-    /* =====================================================
+    /* 
        BOTONES PRINCIPALES
-    ===================================================== */
+     */
 
     elementos.btnOpenReport =
         document.getElementById(
@@ -79,9 +79,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        ESTADÍSTICAS
-    ===================================================== */
+     */
 
     elementos.totalReports =
         document.getElementById(
@@ -107,9 +107,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        FILTROS
-    ===================================================== */
+     */
 
     elementos.statusFilter =
         document.getElementById(
@@ -117,9 +117,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        LISTA DE REPORTES
-    ===================================================== */
+     */
 
     elementos.reportsList =
         document.getElementById(
@@ -145,9 +145,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        MODAL CREAR REPORTE
-    ===================================================== */
+     */
 
     elementos.reportModal =
         document.getElementById(
@@ -173,9 +173,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        FORMULARIO
-    ===================================================== */
+     */
 
     elementos.reportForm =
         document.getElementById(
@@ -231,9 +231,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        UBICACIÓN
-    ===================================================== */
+     */
 
     elementos.btnGetLocation =
         document.getElementById(
@@ -247,9 +247,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        PREVISUALIZACIÓN DE FOTO
-    ===================================================== */
+     */
 
     elementos.photoPreview =
         document.getElementById(
@@ -269,9 +269,9 @@ function inicializarElementos() {
         );
 
 
-    /* =====================================================
+    /* 
        MODAL DETALLE
-    ===================================================== */
+     */
 
     elementos.detailModal =
         document.getElementById(
@@ -299,10 +299,9 @@ function inicializarElementos() {
 }
 
 
-/* =========================================================
+/* 
    INICIALIZACIÓN
-========================================================= */
-
+ */
 document.addEventListener(
     'DOMContentLoaded',
     iniciarPagina
@@ -319,20 +318,46 @@ async function iniciarPagina() {
 
     configurarEventos();
 
+    const usuario =
+        await obtenerUsuarioActual();
+
+    console.log(
+        'Usuario autenticado:',
+        usuario
+    );
+
+
+    const nombreUsuario =
+        document.getElementById(
+            'nombre-usuario'
+        );
+
+
+    if (
+        nombreUsuario &&
+        usuario
+    ) {
+
+        nombreUsuario.textContent =
+            usuario.username;
+
+    }
+
+
     await cargarMisReportes();
 
 }
 
 
-/* =========================================================
+/* 
    EVENTOS
-========================================================= */
+ */
 
 function configurarEventos() {
 
-    /* =====================================================
+    /* 
        ABRIR MODAL
-    ===================================================== */
+     */
 
     elementos.btnOpenReport
         ?.addEventListener(
@@ -348,9 +373,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        CERRAR MODAL
-    ===================================================== */
+     */
 
     elementos.btnCloseReport
         ?.addEventListener(
@@ -373,9 +398,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        FILTRO
-    ===================================================== */
+     */
 
     elementos.statusFilter
         ?.addEventListener(
@@ -384,9 +409,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        ACTUALIZAR
-    ===================================================== */
+     */
 
     elementos.btnRefreshReports
         ?.addEventListener(
@@ -395,9 +420,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        FORMULARIO
-    ===================================================== */
+     */
 
     elementos.reportForm
         ?.addEventListener(
@@ -406,9 +431,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        GPS
-    ===================================================== */
+     */
 
     elementos.btnGetLocation
         ?.addEventListener(
@@ -417,9 +442,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        FOTO
-    ===================================================== */
+     */
 
     elementos.foto
         ?.addEventListener(
@@ -435,9 +460,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        MODAL DETALLE
-    ===================================================== */
+     */
 
     elementos.btnCloseDetail
         ?.addEventListener(
@@ -453,9 +478,9 @@ function configurarEventos() {
         );
 
 
-    /* =====================================================
+    /* 
        ESCAPE
-    ===================================================== */
+     */
 
     document.addEventListener(
         'keydown',
@@ -465,9 +490,9 @@ function configurarEventos() {
 }
 
 
-/* =========================================================
+/* 
    CARGAR REPORTES
-========================================================= */
+ */
 
 async function cargarMisReportes() {
 
@@ -514,9 +539,9 @@ async function cargarMisReportes() {
 }
 
 
-/* =========================================================
+/* 
    ESTADÍSTICAS
-========================================================= */
+ */
 
 function actualizarEstadisticas() {
 
@@ -567,9 +592,9 @@ function actualizarEstadisticas() {
 }
 
 
-/* =========================================================
+/* 
    RENDERIZAR REPORTES
-========================================================= */
+ */
 
 function renderizarReportes() {
 
@@ -638,10 +663,9 @@ function renderizarReportes() {
 }
 
 
-/* =========================================================
+/* 
    CREAR TARJETA
-========================================================= */
-
+ */
 function crearTarjetaReporte(
     reporte
 ) {
@@ -724,20 +748,40 @@ function crearTarjetaReporte(
 
             </span>
 
-            <button
-                type="button"
-                class="report-card__button"
-                data-report-id="${reporte.id}"
-            >
 
-                Ver detalle
+            <div class="report-card__actions">
 
-            </button>
+                <button
+                    type="button"
+                    class="report-card__button"
+                    data-report-id="${reporte.id}"
+                >
+
+                    Ver detalle
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="report-card__button"
+                    data-edit-report-id="${reporte.id}"
+                >
+
+                    Editar
+
+                </button>
+
+            </div>
 
         </div>
 
     `;
 
+
+    /* 
+       BOTÓN VER DETALLE
+     */
 
     const btnDetalle =
         article.querySelector(
@@ -745,12 +789,37 @@ function crearTarjetaReporte(
         );
 
 
-    btnDetalle.addEventListener(
+    btnDetalle?.addEventListener(
         'click',
-        () =>
+        () => {
+
             abrirDetalleReporte(
                 reporte.id
-            )
+            );
+
+        }
+    );
+
+
+    /* 
+       BOTÓN EDITAR
+     */
+
+    const btnEditar =
+        article.querySelector(
+            '[data-edit-report-id]'
+        );
+
+
+    btnEditar?.addEventListener(
+        'click',
+        () => {
+
+            abrirEditarReporte(
+                reporte.id
+            );
+
+        }
     );
 
 
@@ -759,9 +828,9 @@ function crearTarjetaReporte(
 }
 
 
-/* =========================================================
+/* 
    ORDENAR REPORTES
-========================================================= */
+ */
 
 function ordenarReportes(
     reportes
@@ -780,9 +849,9 @@ function ordenarReportes(
 }
 
 
-/* =========================================================
+/* 
    FILTRO
-========================================================= */
+ */
 
 function manejarFiltro(
     event
@@ -797,9 +866,9 @@ function manejarFiltro(
 }
 
 
-/* =========================================================
+/* 
    MODAL — CREAR REPORTE
-========================================================= */
+ */
 
 function abrirModalReporte() {
 
@@ -834,10 +903,23 @@ function cerrarModalReporte() {
 
 }
 
+/* 
+   MODAL — EDITAR REPORTE
+ */
 
-/* =========================================================
+async function abrirEditarReporte(id) {
+
+    console.log(
+        'Editar reporte:',
+        id
+    );
+
+}
+
+
+/* 
    FORMULARIO
-========================================================= */
+ */
 
 async function manejarEnvioReporte(
     event
@@ -947,9 +1029,9 @@ async function manejarEnvioReporte(
 }
 
 
-/* =========================================================
+/* 
    VALIDAR FORMULARIO
-========================================================= */
+ */
 
 function validarFormulario(
     datos
@@ -997,9 +1079,9 @@ function validarFormulario(
 }
 
 
-/* =========================================================
+/* 
    GPS
-========================================================= */
+ */
 
 function obtenerUbicacion() {
 
@@ -1114,9 +1196,9 @@ function obtenerUbicacion() {
 }
 
 
-/* =========================================================
+/* 
    FOTO
-========================================================= */
+ */
 
 function manejarSeleccionFoto(
     event
@@ -1204,9 +1286,9 @@ function eliminarFoto() {
 }
 
 
-/* =========================================================
+/* 
    LIMPIAR FORMULARIO
-========================================================= */
+ */
 
 function limpiarFormulario() {
 
@@ -1237,9 +1319,9 @@ function limpiarFormulario() {
 }
 
 
-/* =========================================================
+/* 
    DETALLE
-========================================================= */
+ */
 
 async function abrirDetalleReporte(
     id
@@ -1478,9 +1560,9 @@ function cerrarModalDetalle() {
 }
 
 
-/* =========================================================
+/* 
    MENSAJES
-========================================================= */
+ */
 
 function mostrarMensaje(
     texto,
@@ -1559,9 +1641,9 @@ function mostrarEstadoUbicacion(
 }
 
 
-/* =========================================================
+/* 
    ESTADO DE CARGA
-========================================================= */
+ */
 
 function mostrarCargando(
     mostrar
@@ -1573,9 +1655,9 @@ function mostrarCargando(
 }
 
 
-/* =========================================================
+/* 
    ESTADO VACÍO
-========================================================= */
+ */
 
 function mostrarEstadoVacio() {
 
@@ -1589,9 +1671,9 @@ function mostrarEstadoVacio() {
 }
 
 
-/* =========================================================
+/* 
    BOTÓN ENVIAR
-========================================================= */
+ */
 
 function cambiarEstadoBotonEnviar(
     cargando
@@ -1609,9 +1691,9 @@ function cambiarEstadoBotonEnviar(
 }
 
 
-/* =========================================================
+/* 
    ESCAPE
-========================================================= */
+ */
 
 function manejarTeclaEscape(
     event
@@ -1646,9 +1728,9 @@ function manejarTeclaEscape(
 }
 
 
-/* =========================================================
+/* 
    FORMATO DE FECHA
-========================================================= */
+ */
 
 function formatearFecha(
     fechaISO
@@ -1683,9 +1765,9 @@ function formatearFecha(
 }
 
 
-/* =========================================================
+/* 
    TEXTO DEL ESTATUS
-========================================================= */
+ */
 
 function obtenerEstatusTexto(
     estatus
@@ -1712,9 +1794,9 @@ function obtenerEstatusTexto(
 }
 
 
-/* =========================================================
+/* 
    TEXTO DEL TIPO
-========================================================= */
+ */
 
 function obtenerTipoIncidenteTexto(
     tipo
@@ -1747,9 +1829,9 @@ function obtenerTipoIncidenteTexto(
 }
 
 
-/* =========================================================
+/* 
    ESCAPAR HTML
-========================================================= */
+ */
 
 /**
  * Evita insertar directamente texto

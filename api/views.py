@@ -34,6 +34,9 @@ class RecursoViewSet(viewsets.ModelViewSet):
         )
 
 
+# API DE REPORTES DE FUGAS
+
+
 class ReporteFugaViewSet(viewsets.ModelViewSet):
 
     queryset = ReporteFuga.objects.all()
@@ -41,8 +44,33 @@ class ReporteFugaViewSet(viewsets.ModelViewSet):
     serializer_class = ReporteFugaSerializer
 
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
+        permissions.IsAuthenticated
     ]
+
+
+    # OBTENER REPORTES
+
+
+    def get_queryset(self):
+
+        # Administrador:
+        # puede ver todos los reportes
+
+        if self.request.user.is_staff:
+
+            return ReporteFuga.objects.all()
+
+
+        # Usuario normal:
+        # solo puede ver sus propios reportes
+
+        return ReporteFuga.objects.filter(
+            owner=self.request.user
+        )
+
+
+
+    # CREAR REPORTE
 
     def perform_create(self, serializer):
 
@@ -50,27 +78,58 @@ class ReporteFugaViewSet(viewsets.ModelViewSet):
             owner=self.request.user
         )
 
-    def get_queryset(self):
 
-        """Filtrar reportes por usuario si se pasa ?owner=me"""
 
-        queryset = ReporteFuga.objects.all()
+    # ACTUALIZAR REPORTE
 
-        owner = self.request.query_params.get(
-            'owner',
-            None
-        )
 
-        if (
-            owner == 'me'
-            and self.request.user.is_authenticated
-        ):
+    def update(self, request, *args, **kwargs):
 
-            queryset = queryset.filter(
-                owner=self.request.user
+        # Solo el administrador puede modificar reportes
+
+        if not request.user.is_staff:
+
+            return Response(
+                {
+                    "detail":
+                        "No tienes permiso para modificar este reporte."
+                },
+                status=403
             )
 
-        return queryset
+
+        return super().update(
+            request,
+            *args,
+            **kwargs
+        )
+
+
+    # ELIMINAR REPORTE
+
+
+    def destroy(self, request, *args, **kwargs):
+
+        # Solo el administrador puede eliminar reportes
+
+        if not request.user.is_staff:
+
+            return Response(
+                {
+                    "detail":
+                        "No tienes permiso para eliminar este reporte."
+                },
+                status=403
+            )
+
+
+        return super().destroy(
+            request,
+            *args,
+            **kwargs
+        )
+
+    
 
 
 @api_view(['GET'])
@@ -140,92 +199,54 @@ def usuario_publico(request):
         })
 
 
+#dashboard administrativo
+
 def dashboard(request):
 
-    """Dashboard con estadísticas de reportes"""
-
-    context = {
-
-        "total_reportes":
-            ReporteFuga.objects.count(),
-
-        "pendientes":
-            ReporteFuga.objects.filter(
-                estatus="PENDIENTE"
-            ).count(),
-
-        "progreso":
-            ReporteFuga.objects.filter(
-                estatus="PROGRESO"
-            ).count(),
-
-        "resueltos":
-            ReporteFuga.objects.filter(
-                estatus="RESUELTO"
-            ).count(),
-
-    }
+    #Dashboard con estadísticas de reportes
 
     return render(
 
         request,
 
         "admin/dashboard.html",
-
-        context
-
     )
 
 
+
+
+#listadp de reportes administrativos
+
 def reportes(request):
 
-    """Listado de reportes"""
-
-    reportes = ReporteFuga.objects.all()
-
-    context = {
-
-        "reportes":
-            reportes
-
-    }
+    #pagina con listado de reportes
 
     return render(
 
         request,
 
         "admin/reportes.html",
-
-        context
-
     )
 
+
+
+
+
+#detalle de reporte administrativo
 
 def detalle_reporte(request, id):
 
-    """Detalle de un reporte específico"""
-
-    reporte = ReporteFuga.objects.get(
-        id=id
-    )
+    #pagina con el detalle reportes
 
     return render(
 
         request,
 
         "admin/detalle_reporte.html",
-
-        {
-            "reporte":
-                reporte
-        }
-
     )
 
 
-# =========================================
 # LOGIN ADMINISTRADOR
-# =========================================
 
 def login_page(request):
 
@@ -238,39 +259,41 @@ def login_page(request):
     )
 
 
-# =========================================
-# INTERFAZ DE USUARIOS
-# =========================================
 
-@login_required(
-    login_url='/login/'
-)
+
 def reportes_usuario(request):
 
-    """Nueva interfaz moderna de reportes para usuarios"""
+    """
+    Renderiza la interfaz de reportes.
 
-    context = {
-
-        'usuario':
-            request.user,
-
-        'total_reportes':
-            ReporteFuga.objects.count(),
-
-        'mis_reportes':
-            ReporteFuga.objects.filter(
-                owner=request.user
-            ).count(),
-
-    }
+    Los datos de los reportes se obtienen
+    mediante la API REST utilizando JWT.
+    """
 
     return render(
 
         request,
 
-        "users/reportes_usuario.html",
+        "users/reportes_usuario.html"
 
-        context
+    )
+
+# INTERFAZ DE USUARIOS
+
+def login_view(request):
+
+    """
+    Renderiza la página de inicio de sesión.
+
+    La autenticación del usuario se realiza
+    mediante la API JWT desde JavaScript.
+    """
+
+    return render(
+
+        request,
+
+        'users/login.html'
 
     )
 
@@ -288,81 +311,7 @@ def test_api(request):
     )
 
 
-# =========================================
-# LOGIN USUARIOS
-# =========================================
 
-@require_http_methods(
-    ["GET", "POST"]
-)
-def login_view(request):
-
-    """Formulario de inicio de sesión para usuarios."""
-
-    if request.user.is_authenticated:
-
-        return redirect(
-            'reportes_usuario'
-        )
-
-    error = None
-
-    username = ''
-
-    if request.method == 'POST':
-
-        username = request.POST.get(
-            'username',
-            ''
-        ).strip()
-
-        password = request.POST.get(
-            'password',
-            ''
-        ).strip()
-
-        user = authenticate(
-
-            request,
-
-            username=username,
-
-            password=password
-
-        )
-
-        if user is not None:
-
-            login(
-                request,
-                user
-            )
-
-            return redirect(
-                'reportes_usuario'
-            )
-
-        error = (
-            'Usuario o contraseña incorrectos'
-        )
-
-    return render(
-
-        request,
-
-        'users/login.html',
-
-        {
-
-            'error':
-                error,
-
-            'username':
-                username,
-
-        }
-
-    )
 
 
 def home(request):
@@ -409,9 +358,7 @@ def home(request):
         )
 
 
-# =========================================
 # REGISTRO DE USUARIOS
-# =========================================
 
 @require_http_methods(
     ["GET", "POST"]
@@ -582,9 +529,7 @@ def registro(request):
     )
 
 
-# =========================================
 # LOGOUT
-# =========================================
 
 @login_required(
     login_url='/login/'
@@ -602,9 +547,7 @@ def logout_view(request):
     )
 
 
-# =========================================
 # LOGOUT ADMINISTRADOR
-# =========================================
 
 def admin_logout_view(request):
 
