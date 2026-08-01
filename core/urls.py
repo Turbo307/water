@@ -1,107 +1,78 @@
-from django.contrib import admin
-from django.urls import path, include
-
-from rest_framework.routers import DefaultRouter
-
-from api.views import (
-    RecursoViewSet,
-    ReporteFugaViewSet
-)
-
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
+from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
+from api.views import (
+    RecursoViewSet,
+    ReporteFugaViewSet,
+    registro_api,
+    usuario_actual,
+)
 
-# =========================================
-# ROUTER DE LA API
-# =========================================
 
+# Router principal de la API
 router = DefaultRouter()
 
 router.register(
-    r'resources',
+    r"resources",
     RecursoViewSet,
-    basename='recurso'
+    basename="recurso",
 )
 
 router.register(
-    r'reportes-fuga',
+    r"reportes-fuga",
     ReporteFugaViewSet,
-    basename='reportefuga'
+    basename="reportefuga",
 )
 
 
-# =========================================
-# URLS PRINCIPALES
-# =========================================
-
 urlpatterns = [
-
     # Panel de administración de Django
+    path("admin/", admin.site.urls),
+
+    # Endpoints principales de la API
+    path("api/", include(router.urls)),
+
+    # Registro de usuarios
     path(
-        'admin/',
-        admin.site.urls
+        "api/registro/",
+        registro_api,
+        name="registro-api",
     ),
 
-
-    # =====================================
-    # API REST
-    # =====================================
-
+    # Datos del usuario autenticado
     path(
-        'api/',
-        include(router.urls)
+        "api/user-auth/",
+        usuario_actual,
+        name="usuario-actual",
     ),
 
-
-    # =====================================
-    # AUTENTICACIÓN JWT
-    # =====================================
-
+    # Inicio de sesión con JWT
     path(
-        'api/token/',
+        "api/token/",
         TokenObtainPairView.as_view(),
-        name='token_obtain_pair'
+        name="token-obtain-pair",
     ),
 
+    # Renovación del token JWT
     path(
-        'api/token/refresh/',
+        "api/token/refresh/",
         TokenRefreshView.as_view(),
-        name='token_refresh'
+        name="token-refresh",
     ),
-
-
-    # =====================================
-    # AUTENTICACIÓN REST FRAMEWORK
-    # =====================================
-
-    path(
-        'api-auth/',
-        include(
-            'rest_framework.urls',
-            namespace='rest_framework'
-        )
-    ),
-
 ]
 
 
-# =========================================
-# ARCHIVOS MEDIA EN DESARROLLO
-# =========================================
-
+# Archivos subidos en desarrollo
 if settings.DEBUG:
-
     urlpatterns += static(
-
         settings.MEDIA_URL,
-
-        document_root=
-        settings.MEDIA_ROOT
-
+        document_root=settings.MEDIA_ROOT,
     )

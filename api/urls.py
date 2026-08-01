@@ -1,119 +1,79 @@
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import include, path
+
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from api.views import (
+    RecursoViewSet,
+    ReporteFugaViewSet,
+    registro_api,
+    usuario_actual,
+)
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+# Router principal de la API
+router = DefaultRouter()
+
+router.register(
+    r"resources",
+    RecursoViewSet,
+    basename="recurso",
+)
+
+router.register(
+    r"reportes-fuga",
+    ReporteFugaViewSet,
+    basename="reporte-fuga",
+)
 
 
 urlpatterns = [
+    # Administración de Django
+    path("admin/", admin.site.urls),
 
-    
-    # PÁGINA DE INICIO
+    # Endpoints principales
+    path("api/", include(router.urls)),
 
-
+    # Registro de usuarios
     path(
-        "",
-        views.home,
-        name="home"
+        "api/registro/",
+        registro_api,
+        name="registro-api",
     ),
 
-
-    
-    # AUTENTICACIÓN DE USUARIOS
-    
-
+    # Usuario autenticado
     path(
-        "registro/",
-        views.registro,
-        name="registro"
+        "api/user-auth/",
+        usuario_actual,
+        name="usuario-actual",
     ),
 
+    # Inicio de sesión JWT
     path(
-        "login/",
-        views.login_view,
-        name="login"
+        "api/token/",
+        TokenObtainPairView.as_view(),
+        name="token-obtain-pair",
     ),
 
+    # Renovación del token JWT
     path(
-        "logout/",
-        views.logout_view,
-        name="logout"
+        "api/token/refresh/",
+        TokenRefreshView.as_view(),
+        name="token-refresh",
     ),
-
-
-  
-    # AUTENTICACIÓN DE ADMINISTRADOR
-    
-
-    path(
-        "admin-login/",
-        views.login_page,
-        name="admin_login"
-    ),
-
-    path(
-    "admin-logout/",
-    views.admin_logout_view,
-    name="admin_logout"
-),
-
-
-    
-    # VISTAS DEL ADMINISTRADOR
-    
-    
-    path(
-        "dashboard/",
-        views.dashboard,
-        name="dashboard"
-    ),
-
-    path(
-        "reportes/",
-        views.reportes,
-        name="reportes"
-    ),
-
-    path(
-        "reportes/<uuid:id>/",
-        views.detalle_reporte,
-        name="detalle_reporte"
-    ),
-
-
-    
-    # INTERFAZ MODERNA DE USUARIOS
-    
-
-    path(
-        "reportes-app/",
-        views.reportes_usuario,
-        name="reportes_usuario"
-    ),
-
-
-    
-    # PRUEBA DE API
-    
-
-    path(
-        "test-api/",
-        views.test_api,
-        name="test_api"
-    ),
-
-
-    
-    # ENDPOINTS DE USUARIO
-    
-
-    path(
-        "user/",
-        views.usuario_publico,
-        name="usuario_publico"
-    ),
-
-    path(
-        "user-auth/",
-        views.usuario_actual,
-        name="usuario_actual"
-    ),
-
 ]
+
+
+# Archivos subidos en desarrollo
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
+    )

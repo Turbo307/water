@@ -1,12 +1,12 @@
 services:
   web:
     build: .
-    container_name: Water_Report_API
+    container_name: Water_Report_API_New
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       DEBUG: "True"
       POSTGRES_DB: water_db
@@ -19,16 +19,16 @@ services:
 
   db:
     image: postgres:16-alpine
-    container_name: Water_Report_DB
+    container_name: Water_Report_DB_New
     restart: always
     environment:
       POSTGRES_DB: water_db
       POSTGRES_USER: water_user
       POSTGRES_PASSWORD: water_password
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_new:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  postgres_data_new:
